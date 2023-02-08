@@ -6,3 +6,6 @@ mining:
     #物品匹配条件
     conditions:
       - "[name] &f&lTest"
+    #物品奖励
+    rewards:
+      - "[command] say Test"
