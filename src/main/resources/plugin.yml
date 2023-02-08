@@ -1,0 +1,6 @@
+name: UltraLucky
+version: '${version}'
+main: dev.rgbmc.ultralucky.UltraLucky
+api-version: 1.13
+authors: [ FlyProject ]
+description: The Next-Generation Open Source Lucky System Solution

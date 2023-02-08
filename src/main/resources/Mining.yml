@@ -1,0 +1,8 @@
+#UltraLucky
+#模块 - Mining (挖矿)
+#制作者 FlyProject
+mining:
+  example:
+    #物品匹配条件
+    conditions:
+      - "[name] &f&lTest"
