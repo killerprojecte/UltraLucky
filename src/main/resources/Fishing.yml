@@ -1,0 +1,11 @@
+#UltraLucky
+#模块 - Fishing (钓鱼)
+#制作者 FlyProject
+fishing:
+  example:
+    #物品匹配条件
+    conditions:
+      - "[name] &f&lTest"
+    #物品奖励
+    rewards:
+      - "[console] say Test"

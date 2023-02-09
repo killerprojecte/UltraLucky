@@ -3,7 +3,7 @@ package dev.rgbmc.ultralucky.utils;
 import org.bukkit.ChatColor;
 
 public class Color {
-    public static String color(String text){
+    public static String color(String text) {
         return ChatColor.translateAlternateColorCodes('&', text);
     }
 }

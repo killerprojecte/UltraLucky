@@ -1,0 +1,14 @@
+#UltraLucky
+#模块 - Tame (驯服)
+#制作者 FlyProject
+tame:
+  example:
+    #匹配的食物类型
+    entities:
+      - "WOLF"
+    #物品匹配条件
+    conditions:
+      - "[none]"
+    #物品奖励
+    rewards:
+      - "[console] say Test"

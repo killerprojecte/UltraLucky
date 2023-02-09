@@ -1,5 +1,8 @@
 plugins {
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'java-library'
+    id 'maven-publish'
 }
 
 group = 'dev.rgbmc'
@@ -15,13 +18,36 @@ repositories {
         name = 'sonatype'
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
+    maven {
+        url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
+    }
+    maven {
+        name = 'fastmcmirror-repo'
+        url = "https://repo.fastmcmirror.org/content/repositories/releases/"
+    }
+    maven {
+        url = 'https://repo.tabooproject.org/repository/releases'
+    }
+    maven { url 'https://jitpack.io' }
+    maven {
+        url = 'https://repo.rosewooddev.io/repository/public/'
+    }
 }
 
 dependencies {
+    implementation 'com.ezylang:EvalEx:3.0.1'
+    implementation 'com.ezylang:EvalEx-big-math:1.0.0'
+    implementation 'org.xerial:sqlite-jdbc:3.40.1.0'
     compileOnly 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
+    compileOnly 'me.clip:placeholderapi:2.11.2'
+    compileOnly 'org.fastmcmirror:flybuff-next:2.0.0-SNAPSHOT-e918cc1'
+    compileOnly 'pku.yim:magicgem:1.05'
+    compileOnly 'ink.ptms:Zaphkiel:2.0.14'
+    compileOnly 'com.github.MilkBowl:VaultAPI:1.7'
+    compileOnly 'org.black_ixx:playerpoints:3.2.5'
 }
 
-def targetJavaVersion = 8
+def targetJavaVersion = 11
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
@@ -33,8 +59,9 @@ java {
 
 tasks.withType(JavaCompile).configureEach {
     if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        options.release = targetJavaVersion
+        options.release = 11
     }
+    options.encoding = 'UTF-8'
 }
 
 processResources {
@@ -43,5 +70,36 @@ processResources {
     filteringCharset 'UTF-8'
     filesMatching('plugin.yml') {
         expand props
+    }
+}
+
+shadowJar {
+    relocate("com.ezylang.evalex", "dev.rgbmc.ultralucky.libs.evalex")
+    archiveClassifier = ""
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId "dev.rgbmc"
+            artifactId "UltraLucky"
+            version = this.version
+            artifact shadowJar
+            artifact sourcesJar
+        }
+    }
+    repositories {
+        maven {
+            url = "https://repo.fastmcmirror.org/content/repositories/releases/"
+            credentials {
+                username System.getenv("USERNAME")
+                password System.getenv("PASSWORD")
+            }
+        }
     }
 }

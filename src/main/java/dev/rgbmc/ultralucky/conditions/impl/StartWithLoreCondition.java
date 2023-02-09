@@ -6,12 +6,12 @@ import dev.rgbmc.ultralucky.utils.Color;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class NameCondition implements Condition {
+public class StartWithLoreCondition implements Condition {
     @Override
     public boolean parse(ItemStack item, Player player, String args) {
-        return item.hasItemMeta() &&
-                item.getItemMeta().hasDisplayName() &&
-                item.getItemMeta().getDisplayName().equals(Color.color(PlaceholderAPIHook.evalString(player, args))
+        return item.hasItemMeta() && item.getItemMeta().hasLore() &&
+                item.getItemMeta().getLore().stream().anyMatch(s ->
+                        s.startsWith(Color.color(PlaceholderAPIHook.evalString(player, args)))
                 );
     }
 }

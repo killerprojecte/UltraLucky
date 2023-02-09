@@ -1,27 +1,41 @@
 package dev.rgbmc.ultralucky.conditions;
 
-import com.google.common.collect.Maps;
-import dev.rgbmc.ultralucky.conditions.impl.NameCondition;
+import dev.rgbmc.ultralucky.UltraLucky;
+import dev.rgbmc.ultralucky.conditions.impl.*;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class ConditionsParser {
-    private static Map<String, Condition> conditionMap = new HashMap<String, Condition>(){
+    private static final Map<String, Condition> conditionMap = new HashMap<String, Condition>() {
         {
             put("name", new NameCondition());
+            put("none", new NoneCondition());
+            put("lore", new LoreCondition());
+            put("start-with-lore", new StartWithLoreCondition());
+            put("permission", new PermissionCondition());
+            put("chance", new ChanceCondition());
+            put("math", new MathCondition());
+            put("time", new TimeCondition());
+            put("material", new MaterialCondition());
+            if (Bukkit.getPluginManager().getPlugin("FlyBuff") != null &&
+                    Bukkit.getPluginManager().getPlugin("FlyBuff").getDescription().getVersion().startsWith("2.")) {
+                UltraLucky.instance.getLogger().info("已检测到 FlyBuff-Next, 已添加 FlyBuff宝石 条件检测");
+                put("flybuff", new FlyBuffGemCondition());
+            }
         }
     };
-    public static boolean checkConditions(List<String> conditions, ItemStack item, Player player){
+
+    public static boolean checkConditions(List<String> conditions, ItemStack item, Player player) {
         root:
-        for (String line : conditions){
-            for (Map.Entry<String, Condition> entry : conditionMap.entrySet()){
+        for (String line : conditions) {
+            for (Map.Entry<String, Condition> entry : conditionMap.entrySet()) {
                 String prefix = "[" + entry.getKey() + "] ";
-                if (line.startsWith(prefix)){
+                if (line.startsWith(prefix)) {
                     line = line.substring(prefix.length());
                     if (!entry.getValue().parse(item, player, line)) return false;
                     continue root;

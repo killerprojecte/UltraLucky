@@ -1,24 +1,38 @@
 package dev.rgbmc.ultralucky.modules;
 
 import dev.rgbmc.ultralucky.UltraLucky;
-import dev.rgbmc.ultralucky.modules.mining.MiningModule;
+import dev.rgbmc.ultralucky.modules.mining.*;
 import org.bukkit.Bukkit;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class ModuleManager {
+    private static final List<Module> loadedModules = new ArrayList<>();
+
     public void loadIncludeModules() {
         List<Module> include = Arrays.asList(
-          new MiningModule()
+                new MiningModule(),
+                new FishingModule(),
+                new EnchantModule(),
+                new EatModule(),
+                new TameModule()
         );
-        for (Module module : include){
+        for (Module module : include) {
             registerModule(module);
         }
     }
 
-    public void registerModule(Module module){
-        UltraLucky.instance.getLogger().info("加载模块 名称: " + module.getName() + " 作者: " + module.getAuthor() + " 版本: " + module.getVersion());
+    public void registerModule(Module module) {
+        UltraLucky.instance.getLogger().info("[!] 加载模块 名称: " + module.getName() + " 作者: " + module.getAuthor() + " 版本: " + module.getVersion());
         Bukkit.getPluginManager().registerEvents(module, UltraLucky.instance);
+        loadedModules.add(module);
+    }
+
+    public void reloadAllModule() {
+        for (Module module : loadedModules) {
+            module.getConfigManager().reloadConfig();
+        }
     }
 }

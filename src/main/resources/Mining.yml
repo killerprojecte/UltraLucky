@@ -3,9 +3,21 @@
 #制作者 FlyProject
 mining:
   example:
+    #匹配的方块类型
+    materials:
+      - "DIAMOND_ORE"
+      - "IRON_ORE"
+      - "STONE"
     #物品匹配条件
+    #第一行请设置为最重要的匹配条件
     conditions:
       - "[name] &f&lTest"
     #物品奖励
     rewards:
-      - "[command] say Test"
+      - "[console] say Test"
+    #是否在未匹配所有条件但符合第一条关键匹配时不移除被挖掘的方块
+    cancel: false
+    #是否取消原方块掉落 (在其他插件影响下可能会失效)
+    prevent-drop: false
+    #是否跳过重新放置的方块
+    prevent-replace: true

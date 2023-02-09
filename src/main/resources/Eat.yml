@@ -1,0 +1,16 @@
+#UltraLucky
+#模块 - Eat (食物)
+#制作者 FlyProject
+eat:
+  example:
+    #匹配的食物类型
+    materials:
+      - "BREED"
+      - "APPLE"
+      - "GOLDEN_APPLE"
+    #物品匹配条件
+    conditions:
+      - "[none]"
+    #物品奖励
+    rewards:
+      - "[console] say Test"

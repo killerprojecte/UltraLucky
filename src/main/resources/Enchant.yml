@@ -1,0 +1,11 @@
+#UltraLucky
+#模块 - Enchant (附魔)
+#制作者 FlyProject
+enchant:
+  example:
+    #物品匹配条件
+    conditions:
+      - "[name] &f&lTest"
+    #物品奖励
+    rewards:
+      - "[console] say Test"
