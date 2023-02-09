@@ -26,7 +26,8 @@ repositories {
         url = "https://repo.fastmcmirror.org/content/repositories/releases/"
     }
     maven {
-        url = 'https://repo.tabooproject.org/repository/releases'
+        url = 'http://ptms.ink:8081/repository/releases/'
+        allowInsecureProtocol = true
     }
     maven { url 'https://jitpack.io' }
     maven {
