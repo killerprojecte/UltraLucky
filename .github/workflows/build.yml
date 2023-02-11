@@ -25,3 +25,15 @@ jobs:
         with:
           name: Artifacts
           path: build/libs/
+      - name: Upload Build to Release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: output/*
+          file_glob: true
+          tag: Build-${{ env.Compile_Date }}
+          overwrite: true
+          prerelease: true
+          body: |
+            UltraLucky 最新构建
+            构建时间: ${{ env.Compile_Date }}
