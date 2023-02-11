@@ -11,6 +11,8 @@ softdepend:
   - MagicGem
   - Vault
   - PlayerPoints
+  - NBTAPI
+  - MythicMobs
 commands:
   ultralucky:
     aliases:

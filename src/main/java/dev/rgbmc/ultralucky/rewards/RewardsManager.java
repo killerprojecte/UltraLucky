@@ -4,6 +4,7 @@ import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.rewards.impl.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ public class RewardsManager {
             put("actionbar", new ActionbarReward());
             put("give", new GiveReward());
             put("drop", new DropReward());
+            put("broadcast", new BroadcastReward());
             if (Bukkit.getPluginManager().getPlugin("FlyBuff") != null &&
                     Bukkit.getPluginManager().getPlugin("FlyBuff").getDescription().getVersion().startsWith("2.")) {
                 UltraLucky.instance.getLogger().info("已检测到 FlyBuff-Next, 已添加 FlyBuff宝石 奖励");
@@ -42,6 +44,22 @@ public class RewardsManager {
             if (Bukkit.getPluginManager().getPlugin("PlayerPoints") != null) {
                 UltraLucky.instance.getLogger().info("已检测到 PlayerPoints, 已添加 PlayerPoints货币 奖励");
                 put("points", new PlayerPointsReward());
+            }
+            if (Bukkit.getPluginManager().getPlugin("MythicMobs") != null) {
+                Plugin mythicMobs = Bukkit.getPluginManager().getPlugin("MythicMobs");
+                if (mythicMobs.getDescription().getVersion().startsWith("4.")) {
+                    UltraLucky.instance.getLogger().info("已检测到 MythicMobs 4.x, 已添加 MythicMobs怪物 奖励");
+                    put("mythicmobs", new MythicMobs4Reward());
+                } else if (mythicMobs.getDescription().getVersion().startsWith("5.")) {
+                    UltraLucky.instance.getLogger().info("已检测到 MythicMobs 5.x, 已添加 MythicMobs怪物 奖励");
+                    put("mythicmobs", new MythicMobs5Reward());
+                } else {
+                    UltraLucky.instance.getLogger().warning("已检测到 MythicMobs 但已安装版本: " + mythicMobs.getDescription().getVersion() + " 为找到对应兼容模块");
+                }
+            }
+            if (Bukkit.getPluginManager().getPlugin("NBTAPI") != null) {
+                UltraLucky.instance.getLogger().info("已检测到 NBTAPI, 已添加 NBT 奖励");
+                put("nbt", new NBTReward());
             }
         }
     };

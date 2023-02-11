@@ -8,6 +8,7 @@ import com.ezylang.evalex.config.ExpressionConfiguration;
 import com.ezylang.evalex.data.EvaluationValue;
 import com.ezylang.evalex.parser.ParseException;
 import dev.rgbmc.ultralucky.UltraLucky;
+import dev.rgbmc.ultralucky.hook.PlaceholderAPIHook;
 import dev.rgbmc.ultralucky.rewards.Reward;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -29,13 +30,13 @@ public class VaultReward implements Reward {
                 return;
             }
         }
-        Expression expression = new Expression(args, evalExConfiguration);
+        Expression expression = new Expression(PlaceholderAPIHook.evalString(player, args), evalExConfiguration);
         try {
             EvaluationValue result = expression.evaluate();
             econ.depositPlayer(player, result.getNumberValue().doubleValue());
         } catch (EvaluationException | ParseException e) {
             e.printStackTrace();
-            UltraLucky.instance.getLogger().warning("在计算Vault奖励时遇到错误 公式: " + args);
+            UltraLucky.instance.getLogger().warning("在计算Vault奖励时遇到错误 公式: " + PlaceholderAPIHook.evalString(player, args));
         }
     }
 

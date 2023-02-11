@@ -27,6 +27,10 @@ public class ConditionsParser {
                 UltraLucky.instance.getLogger().info("已检测到 FlyBuff-Next, 已添加 FlyBuff宝石 条件检测");
                 put("flybuff", new FlyBuffGemCondition());
             }
+            if (Bukkit.getPluginManager().getPlugin("NBTAPI") != null) {
+                UltraLucky.instance.getLogger().info("已检测到 NBTAPI, 已添加 NBT 条件检测");
+                put("nbt", new NBTCondition());
+            }
         }
     };
 

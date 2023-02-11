@@ -8,6 +8,7 @@ import com.ezylang.evalex.config.ExpressionConfiguration;
 import com.ezylang.evalex.data.EvaluationValue;
 import com.ezylang.evalex.parser.ParseException;
 import dev.rgbmc.ultralucky.UltraLucky;
+import dev.rgbmc.ultralucky.hook.PlaceholderAPIHook;
 import dev.rgbmc.ultralucky.rewards.Reward;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
@@ -27,13 +28,13 @@ public class PlayerPointsReward implements Reward {
             PlayerPoints plugin = (PlayerPoints) Bukkit.getPluginManager().getPlugin("PlayerPoints");
             playerPointsAPI = plugin.getAPI();
         }
-        Expression expression = new Expression(args, evalExConfiguration);
+        Expression expression = new Expression(PlaceholderAPIHook.evalString(player, args), evalExConfiguration);
         try {
             EvaluationValue result = expression.evaluate();
             playerPointsAPI.give(player.getUniqueId(), result.getNumberValue().intValue());
         } catch (EvaluationException | ParseException e) {
             e.printStackTrace();
-            UltraLucky.instance.getLogger().warning("在计算PlayerPoints奖励时遇到错误 公式: " + args);
+            UltraLucky.instance.getLogger().warning("在计算PlayerPoints奖励时遇到错误 公式: " + PlaceholderAPIHook.evalString(player, args));
         }
     }
 }
