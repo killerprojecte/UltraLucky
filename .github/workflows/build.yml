@@ -31,7 +31,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: output/*
           file_glob: true
-          tag: Build-${{ env.Compile_Date }}
+          tag: Latest-Build
           overwrite: true
           prerelease: true
           body: |
