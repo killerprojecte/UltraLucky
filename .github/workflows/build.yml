@@ -29,7 +29,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: output/*
+          file: build/libs/*
           file_glob: true
           tag: Latest-Build
           overwrite: true
