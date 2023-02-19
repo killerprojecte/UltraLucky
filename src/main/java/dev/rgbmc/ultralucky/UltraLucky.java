@@ -3,6 +3,7 @@ package dev.rgbmc.ultralucky;
 import dev.rgbmc.ultralucky.command.UltraLuckyCommand;
 import dev.rgbmc.ultralucky.database.BlockStorage;
 import dev.rgbmc.ultralucky.modules.ModuleManager;
+import dev.rgbmc.ultralucky.utils.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,6 +23,8 @@ public final class UltraLucky extends JavaPlugin {
     public static ModuleManager getModuleManager() {
         return moduleManager;
     }
+
+    private Metrics metrics;
 
     @Override
     public void onEnable() {
@@ -49,6 +52,8 @@ public final class UltraLucky extends JavaPlugin {
             setEnabled(false);
             return;
         }
+        metrics = new Metrics(this, 17766);
+        ;
         moduleManager = new ModuleManager();
         blockStorage = new BlockStorage();
         Bukkit.getPluginManager().registerEvents(blockStorage, this);
@@ -62,6 +67,7 @@ public final class UltraLucky extends JavaPlugin {
     public void onDisable() {
         getLogger().info("[!] 正在断开与 BlockStorage 方块数据库 的连接");
         blockStorage.close();
+        metrics.shutdown();
     }
 
     private void printLogo(String str) {
