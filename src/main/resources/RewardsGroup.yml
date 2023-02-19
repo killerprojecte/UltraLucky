@@ -1,0 +1,10 @@
+#奖励组
+#支持随机功能和独立变量
+#方便使用多个重复奖励组合的用户
+group:
+  "ExampleGroup":
+    #随机奖励
+    random: false
+    #奖励 $group - 显示奖励组的名称
+    rewards:
+      - "[console] say Test"

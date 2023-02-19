@@ -1,0 +1,5 @@
+#条件组
+#方便多个重复条件组合的用户
+group:
+  "ExampleGroup":
+    - "[none] "
