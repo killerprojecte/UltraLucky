@@ -4,6 +4,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checking Environment
+        run: |
+          sudo timedatectl set-timezone "Asia/Shanghai"
+          echo "Compile_Date=$(date +%Y%m%d%H%M)" >> $GITHUB_ENV
       - name: checkout repository
         uses: actions/checkout@v2
       - name: Validate Gradle Wrapper
@@ -31,9 +35,10 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: build/libs/*
           file_glob: true
-          tag: Latest-Build
+          tag: ${{ github.ref }}
+          release_name: "UltraLucky_Dev-${{ env.Compile_Date }}"
           overwrite: true
-          prerelease: true
+          prerelease: false
           body: |
-            UltraLucky 最新构建
+            UltraLucky 构建
             构建时间: ${{ env.Compile_Date }}

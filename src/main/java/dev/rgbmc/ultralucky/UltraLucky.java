@@ -35,6 +35,8 @@ public final class UltraLucky extends JavaPlugin {
         saveFile("Enchant.yml");
         saveFile("Eat.yml");
         saveFile("Tame.yml");
+        saveFile("ConditionsGroup.yml");
+        saveFile("RewardsGroup.yml");
         printLogo("                                    \n" +
                 "────────────────────────────────────\n" +
                 "                                    \n" +
