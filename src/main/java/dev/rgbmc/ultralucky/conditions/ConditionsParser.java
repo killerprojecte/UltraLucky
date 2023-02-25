@@ -24,6 +24,8 @@ public class ConditionsParser {
             put("material", new MaterialCondition());
             put("group", new ConditionsGroupCondition());
             put("world", new WorldCondition());
+            put("world_regex", new WorldRegexCondition());
+            put("js", new JavascriptCondition());
             if (Bukkit.getPluginManager().getPlugin("FlyBuff") != null &&
                     Bukkit.getPluginManager().getPlugin("FlyBuff").getDescription().getVersion().startsWith("2.")) {
                 UltraLucky.instance.getLogger().info("已检测到 FlyBuff-Next, 已添加 FlyBuff宝石 条件检测");

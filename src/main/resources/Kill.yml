@@ -1,0 +1,19 @@
+#UltraLucky
+#模块 - Kill (击杀)
+#制作者 FlyProject
+kill:
+  example:
+    #匹配生物类型
+    types:
+      - "ZOMBIE"
+      - "PLAYER"
+    #物品匹配条件
+    #第一行请设置为最重要的匹配条件
+    conditions:
+      - "[name] &f&lTest"
+    #物品奖励
+    rewards:
+      - "[console] say Test"
+    #实体匹配条件
+    entity_conditions:
+      - "[name] &a&l僵尸"

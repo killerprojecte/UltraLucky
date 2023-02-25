@@ -1,5 +1,6 @@
 package dev.rgbmc.ultralucky.modules;
 
+import dev.rgbmc.ultralucky.UltraLucky;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Listener;
 
@@ -16,5 +17,9 @@ public interface Module extends Listener {
 
     default public ModuleConfig getConfigManager() {
         return new ModuleConfig(this);
+    }
+
+    default public void register() {
+        UltraLucky.getModuleManager().registerModule(this);
     }
 }

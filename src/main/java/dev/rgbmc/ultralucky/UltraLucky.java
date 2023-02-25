@@ -35,8 +35,10 @@ public final class UltraLucky extends JavaPlugin {
         saveFile("Enchant.yml");
         saveFile("Eat.yml");
         saveFile("Tame.yml");
+        saveFile("Kill.yml");
         saveFile("ConditionsGroup.yml");
         saveFile("RewardsGroup.yml");
+        saveFile("js/example.js");
         printLogo("                                    \n" +
                 "────────────────────────────────────\n" +
                 "                                    \n" +
@@ -53,6 +55,10 @@ public final class UltraLucky extends JavaPlugin {
             getLogger().severe("[!] 当前服务端使用的JDK版本过低 请使用Java11及更新版本");
             setEnabled(false);
             return;
+        }
+        if (Double.parseDouble(System.getProperty("java.specification.version")) > 14) {
+            getLogger().warning("[!] Java15+ 使用JavaScript功能 可能需要额外安装插件");
+            getLogger().warning("[!] 推荐插件: MomoJS(MCBBS), JSEngine(SpigotMC)");
         }
         metrics = new Metrics(this, 17766);
         ;

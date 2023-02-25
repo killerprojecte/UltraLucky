@@ -17,10 +17,11 @@ public class ModuleManager {
                 new FishingModule(),
                 new EnchantModule(),
                 new EatModule(),
-                new TameModule()
+                new TameModule(),
+                new KillModule()
         );
         for (Module module : include) {
-            registerModule(module);
+            module.register();
         }
     }
 
