@@ -35,7 +35,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: build/libs/*
           file_glob: true
-          tag: ${{ github.ref }}
+          tag: Latest-Build
           release_name: "UltraLucky_Dev-${{ env.Compile_Date }}"
           overwrite: true
           prerelease: false
