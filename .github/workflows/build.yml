@@ -29,13 +29,18 @@ jobs:
         with:
           name: Artifacts
           path: build/libs/
+      - name: Create Release Tag
+        uses: rickstaa/action-create-tag@v1
+        with:
+          tag: "Build-${{ env.Compile_Date }}"
+          message: "Build ${{ env.Compile_Date }}"
       - name: Upload Build to Release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: build/libs/*
           file_glob: true
-          tag: Latest-Build
+          tag: "Build-${{ env.Compile_Date }}"
           release_name: "UltraLucky_Dev-${{ env.Compile_Date }}"
           overwrite: true
           prerelease: false
