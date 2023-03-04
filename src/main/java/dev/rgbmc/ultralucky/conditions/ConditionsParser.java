@@ -26,6 +26,7 @@ public class ConditionsParser {
             put("world", new WorldCondition());
             put("world_regex", new WorldRegexCondition());
             put("js", new JavascriptCondition());
+            put("invslot", new InventorySlotCondition());
             if (Bukkit.getPluginManager().getPlugin("FlyBuff") != null &&
                     Bukkit.getPluginManager().getPlugin("FlyBuff").getDescription().getVersion().startsWith("2.")) {
                 UltraLucky.instance.getLogger().info("已检测到 FlyBuff-Next, 已添加 FlyBuff宝石 条件检测");
@@ -56,5 +57,9 @@ public class ConditionsParser {
     public static void registerCondition(String tag, Condition condition) {
         UltraLucky.instance.getLogger().info("[!] 注册外部条件 TAG: " + tag + " 路径: " + condition.getClass().getName());
         conditionMap.put(tag, condition);
+    }
+
+    public static Condition getCondition(String tag) {
+        return conditionMap.get(tag);
     }
 }

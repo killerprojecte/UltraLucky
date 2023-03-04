@@ -47,3 +47,5 @@ jobs:
           body: |
             UltraLucky 构建
             构建时间: ${{ env.Compile_Date }}
+            提交信息: 
+            ${{ github.event.head_commit.message }
