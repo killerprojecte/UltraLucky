@@ -18,7 +18,8 @@ public class ModuleManager {
                 new EnchantModule(),
                 new EatModule(),
                 new TameModule(),
-                new KillModule()
+                new KillModule(),
+                new ThrowEggModule()
         );
         for (Module module : include) {
             module.register();

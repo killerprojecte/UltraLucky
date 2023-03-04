@@ -6,6 +6,7 @@ import io.lumine.mythic.api.adapters.AbstractLocation;
 import io.lumine.mythic.api.mobs.MythicMob;
 import io.lumine.mythic.bukkit.BukkitAdapter;
 import io.lumine.mythic.bukkit.MythicBukkit;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -13,7 +14,7 @@ import java.util.Optional;
 public class MythicMobs5Reward implements Reward {
     @Override
     public void forward(Player player, String args) {
-        String[] param = args.split(",");
+        String[] param = PlaceholderAPI.setPlaceholders(player, args).split(",");
         AbstractLocation location = BukkitAdapter.adapt(player.getLocation());
         Optional<MythicMob> optionalMythicMob = MythicBukkit.inst().getMobManager().getMythicMob(param[0]);
         if (optionalMythicMob.isEmpty()) {

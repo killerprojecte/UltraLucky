@@ -79,4 +79,9 @@ public class RewardsManager {
             }
         }
     }
+
+    public static void registerReward(String tag, Reward reward) {
+        UltraLucky.instance.getLogger().info("[!] 注册外部奖励 TAG: " + tag + " 路径: " + reward.getClass().getName());
+        rewardMap.put(tag, reward);
+    }
 }

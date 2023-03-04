@@ -52,4 +52,9 @@ public class ConditionsParser {
         }
         return true;
     }
+
+    public static void registerCondition(String tag, Condition condition) {
+        UltraLucky.instance.getLogger().info("[!] 注册外部条件 TAG: " + tag + " 路径: " + condition.getClass().getName());
+        conditionMap.put(tag, condition);
+    }
 }

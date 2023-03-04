@@ -1,0 +1,17 @@
+#UltraLucky
+#模块 - Mining (挖矿)
+#制作者 FlyProject
+throwing:
+  example:
+    #物品匹配条件
+    #第一行请设置为最重要的匹配条件
+    conditions:
+      - "[none]"
+    #物品奖励
+    rewards:
+      - "[message] &f&l你扔了鸡蛋"
+    #是否仅检测孵化出生物的蛋
+    hatching: false
+    #检测自定义孵化生物
+    hatching_types:
+      - "CHICKEN"

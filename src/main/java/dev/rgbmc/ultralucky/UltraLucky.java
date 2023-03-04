@@ -3,6 +3,7 @@ package dev.rgbmc.ultralucky;
 import dev.rgbmc.ultralucky.command.UltraLuckyCommand;
 import dev.rgbmc.ultralucky.database.BlockStorage;
 import dev.rgbmc.ultralucky.modules.ModuleManager;
+import dev.rgbmc.ultralucky.utils.Announcement;
 import dev.rgbmc.ultralucky.utils.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -36,6 +37,7 @@ public final class UltraLucky extends JavaPlugin {
         saveFile("Eat.yml");
         saveFile("Tame.yml");
         saveFile("Kill.yml");
+        saveFile("ThrowEgg.yml");
         saveFile("ConditionsGroup.yml");
         saveFile("RewardsGroup.yml");
         saveFile("js/example.js");
@@ -61,7 +63,6 @@ public final class UltraLucky extends JavaPlugin {
             getLogger().warning("[!] 推荐插件: MomoJS(MCBBS), JSEngine(SpigotMC)");
         }
         metrics = new Metrics(this, 17766);
-        ;
         moduleManager = new ModuleManager();
         blockStorage = new BlockStorage();
         Bukkit.getPluginManager().registerEvents(blockStorage, this);
@@ -69,6 +70,7 @@ public final class UltraLucky extends JavaPlugin {
         moduleManager.loadIncludeModules();
         getLogger().info("[!] 所有内置组件已加载完成");
         getCommand("ultralucky").setExecutor(new UltraLuckyCommand());
+        Bukkit.getScheduler().scheduleSyncDelayedTask(this, Announcement::get);
     }
 
     @Override

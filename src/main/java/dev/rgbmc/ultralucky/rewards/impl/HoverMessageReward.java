@@ -1,6 +1,7 @@
 package dev.rgbmc.ultralucky.rewards.impl;
 
 import dev.rgbmc.ultralucky.rewards.Reward;
+import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -23,19 +24,24 @@ public class HoverMessageReward implements Reward {
 
     @Override
     public void forward(Player player, String args) {
-        String[] param = args.split(",");
+        String[] param = PlaceholderAPI.setPlaceholders(player, args).split(",");
         if (param.length == 2) {
             player.spigot().sendMessage(getHoverText(param[0], param[1]));
         } else if (param.length == 4) {
             ClickEvent.Action action;
-            if (param[2].equals("cmd")) {
-                action = ClickEvent.Action.RUN_COMMAND;
-            } else if (param[2].equals("suggest")) {
-                action = ClickEvent.Action.SUGGEST_COMMAND;
-            } else if (param[2].equals("copy")) {
-                action = ClickEvent.Action.valueOf("COPY_TO_CLIPBOARD");
-            } else {
-                action = ClickEvent.Action.OPEN_URL;
+            switch (param[2]) {
+                case "cmd":
+                    action = ClickEvent.Action.RUN_COMMAND;
+                    break;
+                case "suggest":
+                    action = ClickEvent.Action.SUGGEST_COMMAND;
+                    break;
+                case "copy":
+                    action = ClickEvent.Action.valueOf("COPY_TO_CLIPBOARD");
+                    break;
+                default:
+                    action = ClickEvent.Action.OPEN_URL;
+                    break;
             }
             player.spigot().sendMessage(getClickHoverText(param[0], param[1], action, param[3]));
         }

@@ -1,5 +1,6 @@
 package dev.rgbmc.ultralucky.entity_conditions;
 
+import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.entity_conditions.impl.*;
 import org.bukkit.entity.LivingEntity;
 
@@ -39,5 +40,10 @@ public class EntityConditionParser {
             }
         }
         return true;
+    }
+
+    public static void registerEntityCondition(String tag, EntityCondition condition) {
+        UltraLucky.instance.getLogger().info("[!] 注册外部实体条件 TAG: " + tag + " 路径: " + condition.getClass().getName());
+        conditionMap.put(tag, condition);
     }
 }
