@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class Announcement {
                 URL url = new URL("https://ghproxy.com/https://raw.githubusercontent.com/killerprojecte/UltraLucky/master/announcement");
                 URLConnection connection = url.openConnection();
                 connection.connect();
-                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
                 String line;
                 while ((line = br.readLine()) != null) {
                     list.add(line);
