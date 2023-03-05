@@ -12,14 +12,11 @@ import org.sqlite.SQLiteDataSource;
 
 import java.io.File;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BlockStorage implements Listener {
 
     private SQLiteDataSource source;
     private Connection connection;
-    private final List<String> cachedList = new ArrayList<>();
 
     public BlockStorage() {
         try {
@@ -65,13 +62,9 @@ public class BlockStorage implements Listener {
 
     public boolean query(Location location) {
         String str = locationToString(location);
-        if (cachedList.contains(str)) return true;
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT Location FROM ultralucky GROUP BY Location HAVING Location = '" + str + "';");
             boolean status = preparedStatement.executeQuery().next();
-            if (status) {
-                cachedList.add(str);
-            }
             return status;
         } catch (SQLException e) {
             throw new RuntimeException(e);
