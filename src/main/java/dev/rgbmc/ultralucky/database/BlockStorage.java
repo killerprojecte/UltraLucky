@@ -19,7 +19,7 @@ public class BlockStorage implements Listener {
 
     private SQLiteDataSource source;
     private Connection connection;
-    private List<String> cachedList = new ArrayList<>();
+    private final List<String> cachedList = new ArrayList<>();
 
     public BlockStorage() {
         try {

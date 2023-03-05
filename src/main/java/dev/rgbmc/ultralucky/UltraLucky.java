@@ -20,12 +20,11 @@ public final class UltraLucky extends JavaPlugin {
     public static UltraLucky instance;
     public static BlockStorage blockStorage;
     private static ModuleManager moduleManager;
+    private Metrics metrics;
 
     public static ModuleManager getModuleManager() {
         return moduleManager;
     }
-
-    private Metrics metrics;
 
     @Override
     public void onEnable() {

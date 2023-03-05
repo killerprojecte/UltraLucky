@@ -10,13 +10,13 @@ public interface Module extends Listener {
 
     Map<Module, ModuleConfig> configMap = new HashMap<>();
 
-    public String getName();
+    String getName();
 
-    public String getVersion();
+    String getVersion();
 
-    public String getAuthor();
+    String getAuthor();
 
-    default public ModuleConfig getConfigManager() {
+    default ModuleConfig getConfigManager() {
         if (configMap.containsKey(this)) {
             return configMap.get(this);
         }
@@ -25,7 +25,7 @@ public interface Module extends Listener {
         return config;
     }
 
-    default public void register() {
+    default void register() {
         UltraLucky.getModuleManager().registerModule(this);
     }
 }

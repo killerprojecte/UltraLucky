@@ -13,6 +13,6 @@ public class HelmetNameCondition implements EntityCondition {
         if (item == null) return false;
         if (!item.hasItemMeta()) return false;
         if (!item.getItemMeta().hasDisplayName()) return false;
-        return item.getItemMeta().getDisplayName().toString().equalsIgnoreCase(Color.color(args));
+        return item.getItemMeta().getDisplayName().equalsIgnoreCase(Color.color(args));
     }
 }
