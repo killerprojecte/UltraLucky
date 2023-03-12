@@ -10,6 +10,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class ConditionsGroupCondition implements Condition {
     @Override
@@ -20,6 +23,14 @@ public class ConditionsGroupCondition implements Condition {
             return false;
         }
         List<String> conditions = configuration.getStringList("group." + args);
-        return ConditionsParser.checkConditions(conditions, item, player);
+        try {
+            return ConditionsParser.checkConditions(conditions, item, player).get(5L, TimeUnit.SECONDS);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            e.printStackTrace();
+            if (e instanceof TimeoutException) {
+                UltraLucky.instance.getLogger().severe("条件组 " + args + " 执行超时");
+            }
+            return false;
+        }
     }
 }

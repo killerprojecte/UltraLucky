@@ -43,21 +43,25 @@ public class MiningModule implements Module {
                 continue;
             AsyncFuture<Boolean> asyncFuture = new AsyncFuture<>(() -> UltraLucky.blockStorage.query(event.getBlock().getLocation()));
             Runnable runnable = () -> {
-                if (!ConditionsParser.checkConditions(section.getStringList("conditions"), pickaxe, player)) {
-                    if (section.getBoolean("cancel") && ConditionsParser.checkConditions(Collections.singletonList(section.getStringList("conditions").get(0)), pickaxe, player)) {
-                        event.setCancelled(true);
+                ConditionsParser.checkConditions(section.getStringList("conditions"), pickaxe, player).thenAcceptAsync(status -> {
+                    if (status) {
+                        if (section.getBoolean("prevent-drop")) {
+                            event.setDropItems(false);
+                        }
+                        Bukkit.getScheduler().runTask(UltraLucky.instance, () -> RewardsManager.forwardRewards(section.getStringList("rewards"), player));
+                    } else if (section.getBoolean("cancel")) {
+                        ConditionsParser.checkConditions(Collections.singletonList(section.getStringList("conditions").get(0)), pickaxe, player).thenAcceptAsync(
+                                single_status -> {
+                                    if (single_status) event.setCancelled(true);
+                                }
+                        );
                     }
-                    return;
-                }
-                if (section.getBoolean("prevent-drop")) {
-                    event.setDropItems(false);
-                }
-                RewardsManager.forwardRewards(section.getStringList("rewards"), player);
+                });
             };
             if (section.getBoolean("prevent-replace")) {
                 asyncFuture.execute().thenAcceptAsync(status -> {
                     if (!status) {
-                        Bukkit.getScheduler().runTask(UltraLucky.instance, runnable);
+                        runnable.run();
                     }
                 });
             } else {

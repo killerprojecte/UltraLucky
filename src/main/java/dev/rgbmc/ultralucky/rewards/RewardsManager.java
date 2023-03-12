@@ -26,6 +26,8 @@ public class RewardsManager {
             put("group", new RewardsGroupReward());
             put("js", new JavascriptReward());
             put("groovy", new GroovyReward());
+            put("cooldown", new CooldownReward());
+            put("enchant", new EnchantReward());
             if (Bukkit.getPluginManager().getPlugin("FlyBuff") != null &&
                     Bukkit.getPluginManager().getPlugin("FlyBuff").getDescription().getVersion().startsWith("2.")) {
                 UltraLucky.instance.getLogger().info("已检测到 FlyBuff-Next, 已添加 FlyBuff宝石 奖励");

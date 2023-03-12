@@ -1,9 +1,11 @@
 package dev.rgbmc.ultralucky.modules.mining;
 
+import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.conditions.ConditionsParser;
 import dev.rgbmc.ultralucky.entity_conditions.EntityConditionParser;
 import dev.rgbmc.ultralucky.modules.Module;
 import dev.rgbmc.ultralucky.rewards.RewardsManager;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,11 +36,15 @@ public class KillModule implements Module {
             ConfigurationSection section = getConfigManager().getConfig().getConfigurationSection("kill." + key);
             if (section.getStringList("types").stream().noneMatch(t -> t.equalsIgnoreCase(event.getEntity().getType().toString())))
                 return;
-            if (!ConditionsParser.checkConditions(section.getStringList("conditions"), killer.getItemInHand(), killer))
-                continue;
-            if (!EntityConditionParser.checkConditions(section.getStringList("entity_conditions"), event.getEntity()))
-                continue;
-            RewardsManager.forwardRewards(section.getStringList("rewards"), killer);
+            ConditionsParser.checkConditions(section.getStringList("conditions"), killer.getItemInHand(), killer).thenAcceptAsync(status -> {
+                if (status) {
+                    Bukkit.getScheduler().runTask(UltraLucky.instance, () -> {
+                        if (!EntityConditionParser.checkConditions(section.getStringList("entity_conditions"), event.getEntity()))
+                            return;
+                        RewardsManager.forwardRewards(section.getStringList("rewards"), killer);
+                    });
+                }
+            });
         }
     }
 }

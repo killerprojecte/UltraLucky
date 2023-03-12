@@ -39,6 +39,7 @@ public final class UltraLucky extends JavaPlugin {
         saveFile("ThrowEgg.yml");
         saveFile("ConditionsGroup.yml");
         saveFile("RewardsGroup.yml");
+        saveFile("InteractBlock.yml");
         saveFile("js/example.js");
         saveFile("groovy/condition.groovy");
         saveFile("groovy/reward.groovy");

@@ -1,8 +1,10 @@
 package dev.rgbmc.ultralucky.modules.mining;
 
+import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.conditions.ConditionsParser;
 import dev.rgbmc.ultralucky.modules.Module;
 import dev.rgbmc.ultralucky.rewards.RewardsManager;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -29,9 +31,11 @@ public class EnchantModule implements Module {
         if (event.isCancelled()) return;
         for (String key : getConfigManager().getConfig().getConfigurationSection("enchant").getKeys(false)) {
             ConfigurationSection section = getConfigManager().getConfig().getConfigurationSection("enchant." + key);
-            if (!ConditionsParser.checkConditions(section.getStringList("conditions"), event.getItem(), event.getEnchanter()))
-                continue;
-            RewardsManager.forwardRewards(section.getStringList("rewards"), event.getEnchanter());
+            ConditionsParser.checkConditions(section.getStringList("conditions"), event.getItem(), event.getEnchanter())
+                    .thenAcceptAsync(status -> {
+                        if (status)
+                            Bukkit.getScheduler().runTask(UltraLucky.instance, () -> RewardsManager.forwardRewards(section.getStringList("rewards"), event.getEnchanter()));
+                    });
         }
     }
 }

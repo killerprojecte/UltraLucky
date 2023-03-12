@@ -1,8 +1,10 @@
 package dev.rgbmc.ultralucky.modules.mining;
 
+import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.conditions.ConditionsParser;
 import dev.rgbmc.ultralucky.modules.Module;
 import dev.rgbmc.ultralucky.rewards.RewardsManager;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,9 +37,10 @@ public class TameModule implements Module {
             if (!(section.getStringList("entities").contains(event.getEntity().getType().toString().toLowerCase()) ||
                     section.getStringList("entities").contains(event.getEntity().getType().toString().toUpperCase())))
                 continue;
-            if (!ConditionsParser.checkConditions(section.getStringList("conditions"), player.getInventory().getItemInMainHand(), player))
-                continue;
-            RewardsManager.forwardRewards(section.getStringList("rewards"), player);
+            ConditionsParser.checkConditions(section.getStringList("conditions"), player.getInventory().getItemInMainHand(), player).thenAcceptAsync(status -> {
+                if (status)
+                    Bukkit.getScheduler().runTask(UltraLucky.instance, () -> RewardsManager.forwardRewards(section.getStringList("rewards"), player));
+            });
         }
     }
 }

@@ -2,6 +2,7 @@ package dev.rgbmc.ultralucky.conditions;
 
 import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.conditions.impl.*;
+import dev.rgbmc.ultralucky.utils.AsyncFuture;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -9,6 +10,10 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class ConditionsParser {
     private static final Map<String, Condition> conditionMap = new HashMap<String, Condition>() {
@@ -28,6 +33,8 @@ public class ConditionsParser {
             put("js", new JavascriptCondition());
             put("invslot", new InventorySlotCondition());
             put("groovy", new GroovyCondition());
+            put("cooldown", new CooldownCondition());
+            put("enchant", new EnchantCondition());
             if (Bukkit.getPluginManager().getPlugin("FlyBuff") != null &&
                     Bukkit.getPluginManager().getPlugin("FlyBuff").getDescription().getVersion().startsWith("2.")) {
                 UltraLucky.instance.getLogger().info("已检测到 FlyBuff-Next, 已添加 FlyBuff宝石 条件检测");
@@ -40,19 +47,34 @@ public class ConditionsParser {
         }
     };
 
-    public static boolean checkConditions(List<String> conditions, ItemStack item, Player player) {
-        root:
-        for (String line : conditions) {
-            for (Map.Entry<String, Condition> entry : conditionMap.entrySet()) {
-                String prefix = "[" + entry.getKey() + "] ";
-                if (line.startsWith(prefix)) {
-                    line = line.substring(prefix.length());
-                    if (!entry.getValue().parse(item, player, line)) return false;
-                    continue root;
+    public static CompletableFuture<Boolean> checkConditions(List<String> conditions, ItemStack item, Player player) {
+        AsyncFuture<Boolean> task = new AsyncFuture<>(() -> {
+            CompletableFuture<Boolean> future = new CompletableFuture<>();
+            for (String line : conditions) {
+                for (Map.Entry<String, Condition> entry : conditionMap.entrySet()) {
+                    String prefix = "[" + entry.getKey() + "] ";
+                    if (line.startsWith(prefix)) {
+                        String param = line.substring(prefix.length());
+                        if (entry.getKey().equals("group")) {
+                            AsyncFuture<Boolean> conditionsGroup = new AsyncFuture<>(() -> entry.getValue().parse(item, player, param));
+                            conditionsGroup.execute().thenAcceptAsync(status -> {
+                                if (!status) future.complete(false);
+                            });
+                        } else {
+                            Bukkit.getScheduler().runTask(UltraLucky.instance, () -> {
+                                if (!entry.getValue().parse(item, player, param)) future.complete(false);
+                            });
+                        }
+                    }
                 }
             }
-        }
-        return true;
+            try {
+                return future.get(500L, TimeUnit.MILLISECONDS);
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                return true;
+            }
+        });
+        return task.execute();
     }
 
     public static void registerCondition(String tag, Condition condition) {

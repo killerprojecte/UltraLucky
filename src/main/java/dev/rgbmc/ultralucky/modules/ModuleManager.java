@@ -19,7 +19,8 @@ public class ModuleManager {
                 new EatModule(),
                 new TameModule(),
                 new KillModule(),
-                new ThrowEggModule()
+                new ThrowEggModule(),
+                new InteractBlockModule()
         );
         for (Module module : include) {
             module.register();

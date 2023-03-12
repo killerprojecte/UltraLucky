@@ -1,0 +1,17 @@
+#UltraLucky
+#模块 - InteractBlock (方块宝藏)
+#制作者 FlyProject
+interact:
+  example:
+    #物品匹配条件
+    conditions:
+      - "[name] &f&lTest"
+    #方块匹配条件
+    block_conditions:
+      - "[type] SAND"
+    #物品奖励
+    rewards:
+      - "[console] say Test"
+    #方块奖励
+    block_rewards:
+      - "[set_type] AIR"
