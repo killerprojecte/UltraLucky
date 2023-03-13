@@ -9,10 +9,14 @@ import java.util.Map;
 import java.util.UUID;
 
 public class CooldownCondition implements Condition {
-    public static Map<UUID, Long> cool_downs = new HashMap<>();
+    public static Map<String, Map<UUID, Long>> cool_downs = new HashMap<>();
 
     @Override
     public boolean parse(ItemStack item, Player player, String args) {
-        return !cool_downs.containsKey(player.getUniqueId());
+        if (cool_downs.containsKey(args)) {
+            Map<UUID, Long> data = cool_downs.get(args);
+            return !data.containsKey(player.getUniqueId());
+        }
+        return false;
     }
 }
