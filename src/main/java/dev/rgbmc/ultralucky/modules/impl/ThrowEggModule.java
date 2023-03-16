@@ -1,4 +1,4 @@
-package dev.rgbmc.ultralucky.modules.mining;
+package dev.rgbmc.ultralucky.modules.impl;
 
 import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.conditions.ConditionsParser;

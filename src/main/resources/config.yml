@@ -1,2 +1,6 @@
 #UltraLucky 由 FlyProject 开发
 #条件用法 与 奖励用法 请查看官方Wiki
+
+#禁用的内置模块
+disable-modules:
+  - ""

@@ -1,4 +1,4 @@
-package dev.rgbmc.ultralucky.modules.mining;
+package dev.rgbmc.ultralucky.modules.impl;
 
 import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.conditions.ConditionsParser;
@@ -39,7 +39,7 @@ public class MiningModule implements Module {
         for (String key : getConfigManager().getConfig().getConfigurationSection("mining").getKeys(false)) {
             ConfigurationSection section = getConfigManager().getConfig().getConfigurationSection("mining." + key);
             if (!(section.getStringList("materials").contains(event.getBlock().getType().toString().toLowerCase()) ||
-                    section.getStringList("materials").contains(event.getBlock().getType().toString().toUpperCase())))
+                    section.getStringList("materials").contains(event.getBlock().getType().toString().toUpperCase()) || section.getStringList("materials").contains("*")))
                 continue;
             AsyncFuture<Boolean> asyncFuture = new AsyncFuture<>(() -> UltraLucky.blockStorage.query(event.getBlock().getLocation()));
             Runnable runnable = () -> {

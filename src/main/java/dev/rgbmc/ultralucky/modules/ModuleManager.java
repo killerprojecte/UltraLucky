@@ -1,7 +1,7 @@
 package dev.rgbmc.ultralucky.modules;
 
 import dev.rgbmc.ultralucky.UltraLucky;
-import dev.rgbmc.ultralucky.modules.mining.*;
+import dev.rgbmc.ultralucky.modules.impl.*;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -23,6 +23,10 @@ public class ModuleManager {
                 new InteractBlockModule()
         );
         for (Module module : include) {
+            if (UltraLucky.instance.getConfig().getStringList("disable-modules").contains(module.getName())) {
+                UltraLucky.instance.getLogger().info("[X] 模块 " + module.getName() + " 已被禁用");
+                continue;
+            }
             module.register();
         }
     }
