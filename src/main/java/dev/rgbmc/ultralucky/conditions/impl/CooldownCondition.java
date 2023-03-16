@@ -17,6 +17,6 @@ public class CooldownCondition implements Condition {
             Map<UUID, Long> data = cool_downs.get(args);
             return !data.containsKey(player.getUniqueId());
         }
-        return false;
+        return true;
     }
 }
