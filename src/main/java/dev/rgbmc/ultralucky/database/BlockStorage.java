@@ -1,7 +1,7 @@
 package dev.rgbmc.ultralucky.database;
 
 import dev.rgbmc.ultralucky.UltraLucky;
-import org.bukkit.Bukkit;
+import dev.rgbmc.ultralucky.utils.AsyncFuture;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -41,10 +41,11 @@ public class BlockStorage implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onBlockBreak(BlockBreakEvent event) {
         if (event.isCancelled()) return;
-        Bukkit.getScheduler().runTaskAsynchronously(UltraLucky.instance, () -> {
+        AsyncFuture<Void> asyncFuture = new AsyncFuture<>(() -> {
             if (!query(event.getBlock().getLocation())) {
                 storage(event.getBlock().getLocation());
             }
+            return null;
         });
     }
 
@@ -53,11 +54,13 @@ public class BlockStorage implements Listener {
         if (event.isCancelled()) return;
         if (event.getPlayer() == null) return;
         if (!event.canBuild()) return;
-        Bukkit.getScheduler().runTaskAsynchronously(UltraLucky.instance, () -> {
+        AsyncFuture<Void> asyncFuture = new AsyncFuture<>(() -> {
             if (!query(event.getBlock().getLocation())) {
                 storage(event.getBlock().getLocation());
             }
+            return null;
         });
+        asyncFuture.execute();
     }
 
     public boolean query(Location location) {

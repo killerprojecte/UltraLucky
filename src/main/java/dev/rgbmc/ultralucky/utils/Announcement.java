@@ -1,7 +1,6 @@
 package dev.rgbmc.ultralucky.utils;
 
 import dev.rgbmc.ultralucky.UltraLucky;
-import org.bukkit.Bukkit;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -13,7 +12,7 @@ import java.util.List;
 
 public class Announcement {
     public static void get() {
-        Bukkit.getScheduler().runTaskAsynchronously(UltraLucky.instance, () -> {
+        AsyncFuture<Void> asyncFuture = new AsyncFuture<>(() -> {
             List<String> list = new ArrayList<>();
             try {
                 URL url = new URL("https://ghproxy.com/https://raw.githubusercontent.com/killerprojecte/UltraLucky/master/announcement");
@@ -32,6 +31,8 @@ public class Announcement {
             } catch (Exception e) {
                 UltraLucky.instance.getLogger().warning("获取公告时遇到错误: " + e.getMessage());
             }
+            return null;
         });
+        asyncFuture.execute();
     }
 }
