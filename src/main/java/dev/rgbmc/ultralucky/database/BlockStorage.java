@@ -28,10 +28,12 @@ public class BlockStorage implements Listener {
             ResultSet resultSet = checkStatement.executeQuery();
             if (resultSet.next()) return;
             statement.addBatch(
-                    "CREATE TABLE \"ultralucky\" (\n" +
+                    "PRAGMA synchronous = OFF;\n" +
+                            "CREATE TABLE \"ultralucky\" (\n" +
                             "  \"Location\" text(200,1) NOT NULL\n" +
                             ");\n" +
-                            "PRAGMA foreign_keys = true;");
+                            "PRAGMA foreign_keys = true;\n" +
+                            "BEGIN;\n");
             statement.executeBatch();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -78,6 +80,8 @@ public class BlockStorage implements Listener {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO ultralucky (\"Location\") VALUES ('" + locationToString(location) + "');");
             preparedStatement.executeUpdate();
+            connection.prepareStatement("COMMIT;").execute();
+            connection.prepareStatement("BEGIN;").execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -94,6 +98,7 @@ public class BlockStorage implements Listener {
 
     public void close() {
         try {
+            connection.prepareStatement("COMMIT;").execute();
             connection.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
