@@ -32,8 +32,7 @@ public class BlockStorage implements Listener {
                             "CREATE TABLE \"ultralucky\" (\n" +
                             "  \"Location\" text(200,1) NOT NULL\n" +
                             ");\n" +
-                            "PRAGMA foreign_keys = true;\n" +
-                            "BEGIN;\n");
+                            "PRAGMA foreign_keys = true;\n");
             statement.executeBatch();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,8 +79,6 @@ public class BlockStorage implements Listener {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO ultralucky (\"Location\") VALUES ('" + locationToString(location) + "');");
             preparedStatement.executeUpdate();
-            connection.prepareStatement("COMMIT;").execute();
-            connection.prepareStatement("BEGIN;").execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -97,11 +94,14 @@ public class BlockStorage implements Listener {
     }
 
     public void close() {
-        try {
-            connection.prepareStatement("COMMIT;").execute();
-            connection.close();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        AsyncFuture<Void> asyncFuture = new AsyncFuture<>(() -> {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            return null;
+        });
+        asyncFuture.execute();
     }
 }
