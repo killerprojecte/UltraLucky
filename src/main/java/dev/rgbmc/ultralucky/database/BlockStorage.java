@@ -27,12 +27,10 @@ public class BlockStorage implements Listener {
             PreparedStatement checkStatement = connection.prepareStatement("SELECT name FROM sqlite_master WHERE type='table' AND name='ultralucky';");
             ResultSet resultSet = checkStatement.executeQuery();
             if (resultSet.next()) return;
-            statement.addBatch(
-                    "PRAGMA synchronous = OFF;\n" +
-                            "CREATE TABLE \"ultralucky\" (\n" +
+            statement.addBatch("CREATE TABLE \"ultralucky\" (\n" +
                             "  \"Location\" text(200,1) NOT NULL\n" +
                             ");\n" +
-                            "PRAGMA foreign_keys = true;\n");
+                            "PRAGMA foreign_keys = true;");
             statement.executeBatch();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -48,6 +46,7 @@ public class BlockStorage implements Listener {
             }
             return null;
         });
+        asyncFuture.execute();
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
