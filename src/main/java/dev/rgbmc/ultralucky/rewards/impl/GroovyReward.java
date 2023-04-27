@@ -13,7 +13,6 @@ import java.io.IOException;
 public class GroovyReward implements Reward {
     @Override
     public void forward(Player player, String args) {
-        System.out.println("running");
         String[] params = args.split("\\|\\|");
         GroovyShell gs = new GroovyShell();
         Script script;
