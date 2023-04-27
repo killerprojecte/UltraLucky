@@ -31,9 +31,10 @@ public class AttackModule implements Module {
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    public void onEntityDead(EntityDamageByEntityEvent event) {
+    public void onAttackEntity(EntityDamageByEntityEvent event) {
         if (event.isCancelled()) return;
         if (!(event.getEntity() instanceof LivingEntity)) return;
+        if (!(event.getDamager() instanceof Player)) return;
         Player player = (Player) event.getDamager();
         for (String key : getConfigManager().getConfig().getConfigurationSection("attack").getKeys(false)) {
             ConfigurationSection section = getConfigManager().getConfig().getConfigurationSection("attack." + key);

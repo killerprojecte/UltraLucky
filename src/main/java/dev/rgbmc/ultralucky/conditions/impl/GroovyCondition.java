@@ -18,7 +18,7 @@ public class GroovyCondition implements Condition {
         GroovyShell gs = new GroovyShell();
         Script script;
         try {
-            script = gs.parse(new File(UltraLucky.instance.getDataFolder(), "groovy/" + params[0] + ".groovy"));
+            script = gs.parse(new File(UltraLucky.instance.getDataFolder(), "scripts/" + params[0] + ".groovy"));
         } catch (IOException e) {
             UltraLucky.instance.getLogger().severe("在解析Groovy脚本 " + params[0] + " 时遇到错误:");
             e.printStackTrace();

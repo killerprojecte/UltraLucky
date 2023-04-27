@@ -13,11 +13,12 @@ import java.io.IOException;
 public class GroovyReward implements Reward {
     @Override
     public void forward(Player player, String args) {
+        System.out.println("running");
         String[] params = args.split("\\|\\|");
         GroovyShell gs = new GroovyShell();
         Script script;
         try {
-            script = gs.parse(new File(UltraLucky.instance.getDataFolder(), "groovy/" + params[0] + ".groovy"));
+            script = gs.parse(new File(UltraLucky.instance.getDataFolder(), "scripts/" + params[0] + ".groovy"));
         } catch (IOException e) {
             UltraLucky.instance.getLogger().severe("在解析Groovy脚本 " + params[0] + " 时遇到错误:");
             e.printStackTrace();

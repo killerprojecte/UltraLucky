@@ -24,6 +24,7 @@ public class EntityConditionParser {
             put("offhand_type", new OffHandTypeCondition());
             put("offhand_name", new OffHandNameCondition());
             put("name", new NameCondition());
+            put("none", new NoneCondition());
         }
     };
 
