@@ -3,6 +3,9 @@
 #制作者 FlyProject
 fishing:
   example:
+    #实体类型
+    types:
+      - "DROPPED_ITEM"
     #物品匹配条件
     conditions:
       - "[name] &f&lTest"

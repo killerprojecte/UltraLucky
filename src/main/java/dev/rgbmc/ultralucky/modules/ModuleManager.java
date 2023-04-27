@@ -20,7 +20,8 @@ public class ModuleManager {
                 new TameModule(),
                 new KillModule(),
                 new ThrowEggModule(),
-                new InteractBlockModule()
+                new InteractBlockModule(),
+                new AttackModule()
         );
         for (Module module : include) {
             if (UltraLucky.instance.getConfig().getStringList("disable-modules").contains(module.getName())) {

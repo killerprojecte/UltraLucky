@@ -32,6 +32,8 @@ public class FishingModule implements Module {
         if (event.getCaught() == null) return;
         for (String key : getConfigManager().getConfig().getConfigurationSection("fishing").getKeys(false)) {
             ConfigurationSection section = getConfigManager().getConfig().getConfigurationSection("fishing." + key);
+            if (section.getStringList("types").stream().noneMatch(s -> s.toUpperCase().equals(event.getCaught().getType().toString())))
+                continue;
             ConditionsParser.checkConditions(section.getStringList("conditions"), event.getPlayer().getInventory().getItemInMainHand(), event.getPlayer()).thenAcceptAsync(status -> {
                 if (status)
                     Bukkit.getScheduler().runTask(UltraLucky.instance, () -> RewardsManager.forwardRewards(section.getStringList("rewards"), event.getPlayer()));
