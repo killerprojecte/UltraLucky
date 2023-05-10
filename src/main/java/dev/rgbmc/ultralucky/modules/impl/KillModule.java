@@ -35,7 +35,7 @@ public class KillModule implements Module {
         for (String key : getConfigManager().getConfig().getConfigurationSection("kill").getKeys(false)) {
             ConfigurationSection section = getConfigManager().getConfig().getConfigurationSection("kill." + key);
             if (section.getStringList("types").stream().noneMatch(t -> t.equalsIgnoreCase(event.getEntity().getType().toString())))
-                return;
+                continue;
             ConditionsParser.checkConditions(section.getStringList("conditions"), killer.getItemInHand(), killer).thenAcceptAsync(status -> {
                 if (status) {
                     Bukkit.getScheduler().runTask(UltraLucky.instance, () -> {
