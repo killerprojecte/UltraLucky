@@ -34,18 +34,16 @@ public class InteractBlockModule implements Module {
         if (event.isCancelled()) return;
         for (String key : getConfigManager().getConfig().getConfigurationSection("interact").getKeys(false)) {
             ConfigurationSection section = getConfigManager().getConfig().getConfigurationSection("interact." + key);
-            ConditionsParser.checkConditions(section.getStringList("conditions"), event.getItem(), player)
-                    .thenAcceptAsync(status -> {
-                        if (status) {
-                            if (BlockConditionsParser.checkConditions(section.getStringList("block_conditions"), event.getClickedBlock(), event.getPlayer())) {
-                                Bukkit.getScheduler().runTask(UltraLucky.instance, () -> {
-                                    RewardsManager.forwardRewards(section.getStringList("rewards"), player);
-                                    BlockRewardsParser.forwardRewards(section.getStringList("block_rewards"), event.getClickedBlock(), player);
+            boolean status = ConditionsParser.checkConditions(section.getStringList("conditions"), event.getItem(), player);
+            if (status) {
+                if (BlockConditionsParser.checkConditions(section.getStringList("block_conditions"), event.getClickedBlock(), event.getPlayer())) {
+                    Bukkit.getScheduler().runTask(UltraLucky.instance, () -> {
+                        RewardsManager.forwardRewards(section.getStringList("rewards"), player);
+                        BlockRewardsParser.forwardRewards(section.getStringList("block_rewards"), event.getClickedBlock(), player);
 
-                                });
-                            }
-                        }
                     });
+                }
+            }
         }
     }
 }

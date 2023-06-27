@@ -32,10 +32,9 @@ public class ThrowEggModule implements Module {
             if (section.getBoolean("hatching") && !event.isHatching()) continue;
             if (section.getStringList("hatching_type").stream().noneMatch(type -> event.getHatchingType().toString().equalsIgnoreCase(type)))
                 continue;
-            ConditionsParser.checkConditions(section.getStringList("conditions"), event.getPlayer().getInventory().getItemInMainHand(), event.getPlayer()).thenAcceptAsync(status -> {
-                if (status)
-                    Bukkit.getScheduler().runTask(UltraLucky.instance, () -> RewardsManager.forwardRewards(section.getStringList("rewards"), event.getPlayer()));
-            });
+            boolean status = ConditionsParser.checkConditions(section.getStringList("conditions"), event.getPlayer().getInventory().getItemInMainHand(), event.getPlayer());
+            if (status)
+                Bukkit.getScheduler().runTask(UltraLucky.instance, () -> RewardsManager.forwardRewards(section.getStringList("rewards"), event.getPlayer()));
         }
     }
 }

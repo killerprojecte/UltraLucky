@@ -12,8 +12,6 @@ public class AsyncFuture<T> {
     }
 
     public CompletableFuture<T> execute() {
-        CompletableFuture<T> completableFuture = new CompletableFuture<>();
-        completableFuture.completeAsync(supplier);
-        return completableFuture;
+        return CompletableFuture.supplyAsync(supplier);
     }
 }

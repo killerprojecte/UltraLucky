@@ -2,9 +2,11 @@ package dev.rgbmc.ultralucky.modules.impl;
 
 import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.conditions.ConditionsParser;
+import dev.rgbmc.ultralucky.fastindex.FastIndex;
+import dev.rgbmc.ultralucky.fastindex.IndexData;
+import dev.rgbmc.ultralucky.fastindex.IndexState;
 import dev.rgbmc.ultralucky.modules.Module;
 import dev.rgbmc.ultralucky.rewards.RewardsManager;
-import dev.rgbmc.ultralucky.utils.AsyncFuture;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -41,29 +43,26 @@ public class MiningModule implements Module {
             if (!(section.getStringList("materials").contains(event.getBlock().getType().toString().toLowerCase()) ||
                     section.getStringList("materials").contains(event.getBlock().getType().toString().toUpperCase()) || section.getStringList("materials").contains("*")))
                 continue;
-            AsyncFuture<Boolean> asyncFuture = new AsyncFuture<>(() -> UltraLucky.blockStorage.query(event.getBlock().getLocation()));
             Runnable runnable = () -> {
-                ConditionsParser.checkConditions(section.getStringList("conditions"), pickaxe, player).thenAcceptAsync(status -> {
-                    if (status) {
-                        if (section.getBoolean("prevent-drop")) {
-                            event.setDropItems(false);
-                        }
-                        Bukkit.getScheduler().runTask(UltraLucky.instance, () -> RewardsManager.forwardRewards(section.getStringList("rewards"), player));
-                    } else if (section.getBoolean("cancel")) {
-                        ConditionsParser.checkConditions(Collections.singletonList(section.getStringList("conditions").get(0)), pickaxe, player).thenAcceptAsync(
-                                single_status -> {
-                                    if (single_status) event.setCancelled(true);
-                                }
-                        );
+                boolean status = ConditionsParser.checkConditions(section.getStringList("conditions"), pickaxe, player);
+                if (status) {
+                    if (section.getBoolean("prevent-drop")) {
+                        event.setDropItems(false);
                     }
-                });
+                    Bukkit.getScheduler().runTask(UltraLucky.instance, () -> RewardsManager.forwardRewards(section.getStringList("rewards"), player));
+                } else if (section.getBoolean("cancel")) {
+                    if (ConditionsParser.checkConditions(Collections.singletonList(section.getStringList("conditions").get(0)), pickaxe, player)) {
+                        event.setCancelled(true);
+                    }
+                }
             };
             if (section.getBoolean("prevent-replace")) {
-                asyncFuture.execute().thenAcceptAsync(status -> {
-                    if (!status) {
-                        runnable.run();
-                    }
-                });
+                if (FastIndex.isIndexed(event.getBlock())) {
+                    IndexData indexData = FastIndex.getIndex(event.getBlock());
+                    //System.out.println(indexData.getState().toString());
+                    if (indexData.getState() != IndexState.INIT) return;
+                }
+                runnable.run();
             } else {
                 runnable.run();
             }

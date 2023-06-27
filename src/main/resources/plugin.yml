@@ -2,6 +2,7 @@ name: UltraLucky
 version: '${version}'
 main: dev.rgbmc.ultralucky.UltraLucky
 api-version: 1.13
+load: POSTWORLD
 authors: [ FlyProject ]
 description: The Next-Generation Open Source Lucky System Solution
 softdepend:

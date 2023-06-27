@@ -31,11 +31,9 @@ public class EnchantModule implements Module {
         if (event.isCancelled()) return;
         for (String key : getConfigManager().getConfig().getConfigurationSection("enchant").getKeys(false)) {
             ConfigurationSection section = getConfigManager().getConfig().getConfigurationSection("enchant." + key);
-            ConditionsParser.checkConditions(section.getStringList("conditions"), event.getItem(), event.getEnchanter())
-                    .thenAcceptAsync(status -> {
-                        if (status)
-                            Bukkit.getScheduler().runTask(UltraLucky.instance, () -> RewardsManager.forwardRewards(section.getStringList("rewards"), event.getEnchanter()));
-                    });
+            boolean status = ConditionsParser.checkConditions(section.getStringList("conditions"), event.getItem(), event.getEnchanter());
+            if (status)
+                Bukkit.getScheduler().runTask(UltraLucky.instance, () -> RewardsManager.forwardRewards(section.getStringList("rewards"), event.getEnchanter()));
         }
     }
 }

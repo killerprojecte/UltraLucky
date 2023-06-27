@@ -40,18 +40,17 @@ public class AttackModule implements Module {
             ConfigurationSection section = getConfigManager().getConfig().getConfigurationSection("attack." + key);
             if (section.getStringList("types").stream().noneMatch(t -> t.equalsIgnoreCase(event.getEntity().getType().toString())))
                 return;
-            ConditionsParser.checkConditions(section.getStringList("conditions"), player.getItemInHand(), player).thenAcceptAsync(status -> {
-                if (status) {
-                    Bukkit.getScheduler().runTask(UltraLucky.instance, () -> {
-                        if (!EntityConditionParser.checkConditions(section.getStringList("entity_conditions"), (LivingEntity) event.getEntity()))
-                            return;
-                        DynamicStorage.storage(player, "damage", "attack_" + key, event.getDamage());
-                        DynamicStorage.storage(player, "final_damage", "attack_" + key, event.getFinalDamage());
-                        DynamicStorage.storage(player, "target", "attack_" + key, event.getEntity());
-                        RewardsManager.forwardRewards(section.getStringList("rewards"), player);
-                    });
-                }
-            });
+            boolean status = ConditionsParser.checkConditions(section.getStringList("conditions"), player.getItemInHand(), player);
+            if (status) {
+                Bukkit.getScheduler().runTask(UltraLucky.instance, () -> {
+                    if (!EntityConditionParser.checkConditions(section.getStringList("entity_conditions"), (LivingEntity) event.getEntity()))
+                        return;
+                    DynamicStorage.storage(player, "damage", "attack_" + key, event.getDamage());
+                    DynamicStorage.storage(player, "final_damage", "attack_" + key, event.getFinalDamage());
+                    DynamicStorage.storage(player, "target", "attack_" + key, event.getEntity());
+                    RewardsManager.forwardRewards(section.getStringList("rewards"), player);
+                });
+            }
         }
     }
 }

@@ -36,15 +36,14 @@ public class KillModule implements Module {
             ConfigurationSection section = getConfigManager().getConfig().getConfigurationSection("kill." + key);
             if (section.getStringList("types").stream().noneMatch(t -> t.equalsIgnoreCase(event.getEntity().getType().toString())))
                 continue;
-            ConditionsParser.checkConditions(section.getStringList("conditions"), killer.getItemInHand(), killer).thenAcceptAsync(status -> {
-                if (status) {
-                    Bukkit.getScheduler().runTask(UltraLucky.instance, () -> {
-                        if (!EntityConditionParser.checkConditions(section.getStringList("entity_conditions"), event.getEntity()))
-                            return;
-                        RewardsManager.forwardRewards(section.getStringList("rewards"), killer);
-                    });
-                }
-            });
+            boolean status = ConditionsParser.checkConditions(section.getStringList("conditions"), killer.getItemInHand(), killer);
+            if (status) {
+                Bukkit.getScheduler().runTask(UltraLucky.instance, () -> {
+                    if (!EntityConditionParser.checkConditions(section.getStringList("entity_conditions"), event.getEntity()))
+                        return;
+                    RewardsManager.forwardRewards(section.getStringList("rewards"), killer);
+                });
+            }
         }
     }
 }

@@ -36,10 +36,9 @@ public class EatModule implements Module {
             if (!(section.getStringList("materials").contains(event.getItem().getType().toString().toLowerCase()) ||
                     section.getStringList("materials").contains(event.getItem().getType().toString().toUpperCase())))
                 continue;
-            ConditionsParser.checkConditions(section.getStringList("conditions"), event.getItem(), event.getPlayer()).thenAcceptAsync(status -> {
-                if (status)
-                    Bukkit.getScheduler().runTask(UltraLucky.instance, () -> RewardsManager.forwardRewards(section.getStringList("rewards"), event.getPlayer()));
-            });
+            boolean status = ConditionsParser.checkConditions(section.getStringList("conditions"), event.getItem(), event.getPlayer());
+            if (status)
+                Bukkit.getScheduler().runTask(UltraLucky.instance, () -> RewardsManager.forwardRewards(section.getStringList("rewards"), event.getPlayer()));
         }
     }
 }

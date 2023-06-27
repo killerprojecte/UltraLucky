@@ -1,7 +1,7 @@
 package dev.rgbmc.ultralucky;
 
 import dev.rgbmc.ultralucky.command.UltraLuckyCommand;
-import dev.rgbmc.ultralucky.database.BlockStorage;
+import dev.rgbmc.ultralucky.fastindex.FastIndex;
 import dev.rgbmc.ultralucky.modules.ModuleManager;
 import dev.rgbmc.ultralucky.utils.Announcement;
 import dev.rgbmc.ultralucky.utils.Metrics;
@@ -18,7 +18,6 @@ import java.net.URLConnection;
 public final class UltraLucky extends JavaPlugin {
 
     public static UltraLucky instance;
-    public static BlockStorage blockStorage;
     private static ModuleManager moduleManager;
     private Metrics metrics;
 
@@ -68,19 +67,18 @@ public final class UltraLucky extends JavaPlugin {
         }
         metrics = new Metrics(this, 17766);
         moduleManager = new ModuleManager();
-        blockStorage = new BlockStorage();
-        Bukkit.getPluginManager().registerEvents(blockStorage, this);
         getLogger().info("[!] BlockStorage 方块数据库初始化完成");
         moduleManager.loadIncludeModules();
         getLogger().info("[!] 所有内置组件已加载完成");
         getCommand("ultralucky").setExecutor(new UltraLuckyCommand());
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, Announcement::get);
+        FastIndex.initIndex(this);
     }
 
     @Override
     public void onDisable() {
-        getLogger().info("[!] 正在断开与 BlockStorage 方块数据库 的连接");
-        blockStorage.close();
+        getLogger().info("[!] 正在关闭 FastIndex 索引器 (保存数据 请勿强制退出)");
+        FastIndex.close();
         metrics.shutdown();
     }
 

@@ -4,3 +4,7 @@
 #禁用的内置模块
 disable-modules:
   - ""
+
+#FastIndex索引器使用的核心数量
+#该数值请视服务器玩家在线人数调整
+indexer-cores: 4

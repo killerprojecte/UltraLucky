@@ -2,6 +2,7 @@
 
 - 下一代幸运系统开源解决方案
 - 同类付费插件**Archeology**的竞争者
+- 目前不支持Folia
 
 ## 从UltraLucky开始
 
@@ -44,7 +45,7 @@
         <dependency>
             <groupId>dev.rgbmc</groupId>
             <artifactId>UltraLucky</artifactId>
-            <version>1.0.0</version>
+            <version>1.1.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -62,7 +63,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'dev.rgbmc:UltraLucky:1.0.0'
+    compileOnly 'dev.rgbmc:UltraLucky:1.1.0'
 }
 ```
 

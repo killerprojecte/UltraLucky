@@ -37,10 +37,9 @@ public class TameModule implements Module {
             if (!(section.getStringList("entities").contains(event.getEntity().getType().toString().toLowerCase()) ||
                     section.getStringList("entities").contains(event.getEntity().getType().toString().toUpperCase())))
                 continue;
-            ConditionsParser.checkConditions(section.getStringList("conditions"), player.getInventory().getItemInMainHand(), player).thenAcceptAsync(status -> {
-                if (status)
-                    Bukkit.getScheduler().runTask(UltraLucky.instance, () -> RewardsManager.forwardRewards(section.getStringList("rewards"), player));
-            });
+            boolean status = ConditionsParser.checkConditions(section.getStringList("conditions"), player.getInventory().getItemInMainHand(), player);
+            if (status)
+                Bukkit.getScheduler().runTask(UltraLucky.instance, () -> RewardsManager.forwardRewards(section.getStringList("rewards"), player));
         }
     }
 }

@@ -2,7 +2,6 @@ package dev.rgbmc.ultralucky.conditions;
 
 import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.conditions.impl.*;
-import dev.rgbmc.ultralucky.utils.AsyncFuture;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -10,10 +9,6 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public class ConditionsParser {
     private static final Map<String, Condition> conditionMap = new HashMap<String, Condition>() {
@@ -47,34 +42,17 @@ public class ConditionsParser {
         }
     };
 
-    public static CompletableFuture<Boolean> checkConditions(List<String> conditions, ItemStack item, Player player) {
-        AsyncFuture<Boolean> task = new AsyncFuture<>(() -> {
-            CompletableFuture<Boolean> future = new CompletableFuture<>();
-            for (String line : conditions) {
-                for (Map.Entry<String, Condition> entry : conditionMap.entrySet()) {
-                    String prefix = "[" + entry.getKey() + "] ";
-                    if (line.startsWith(prefix)) {
-                        String param = line.substring(prefix.length());
-                        if (entry.getKey().equals("group")) {
-                            AsyncFuture<Boolean> conditionsGroup = new AsyncFuture<>(() -> entry.getValue().parse(item, player, param));
-                            conditionsGroup.execute().thenAcceptAsync(status -> {
-                                if (!status) future.complete(false);
-                            });
-                        } else {
-                            Bukkit.getScheduler().runTask(UltraLucky.instance, () -> {
-                                if (!entry.getValue().parse(item, player, param)) future.complete(false);
-                            });
-                        }
-                    }
+    public static boolean checkConditions(List<String> conditions, ItemStack item, Player player) {
+        for (String line : conditions) {
+            for (Map.Entry<String, Condition> entry : conditionMap.entrySet()) {
+                String prefix = "[" + entry.getKey() + "] ";
+                if (line.startsWith(prefix)) {
+                    String param = line.substring(prefix.length());
+                    if (!entry.getValue().parse(item, player, param)) return false;
                 }
             }
-            try {
-                return future.get(500L, TimeUnit.MILLISECONDS);
-            } catch (InterruptedException | ExecutionException | TimeoutException e) {
-                return true;
-            }
-        });
-        return task.execute();
+        }
+        return true;
     }
 
     public static void registerCondition(String tag, Condition condition) {
