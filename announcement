@@ -2,5 +2,6 @@ UltraLucky 最新版本构建已在Github Releases可用
 1.1.0版本已开始开发 最新开发版已在Github可用
 目前已移除旧版异步代码 转在主线程执行
 FastIndex 已替代 BlockStorage 实现高性能方块数据存储
-到稳定版发布时将会支持跨模块变量功能 (RuntimeVariable)
-[2023-6-27]
+RuntimeVariable 已在1.1.0最新版中可用 (大部分条件和奖励都已带有变量)
+FastConfig 已替代Bukkit原生yaml配置框架 缓存配置后读取性能更高
+[2023-7-1]

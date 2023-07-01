@@ -2,6 +2,7 @@ package dev.rgbmc.ultralucky.rewards;
 
 import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.rewards.impl.*;
+import dev.rgbmc.ultralucky.variables.RuntimeVariable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -69,18 +70,23 @@ public class RewardsManager {
         }
     };
 
-    public static void forwardRewards(List<String> rewards, Player player) {
+    public static void forwardRewards(List<String> rewards, Player player, RuntimeVariable variable) {
         root:
         for (String line : rewards) {
             for (Map.Entry<String, Reward> entry : rewardMap.entrySet()) {
                 String prefix = "[" + entry.getKey() + "] ";
                 if (line.startsWith(prefix)) {
                     line = line.substring(prefix.length());
-                    entry.getValue().forward(player, line);
+                    entry.getValue().forward(player, line, variable);
                     continue root;
                 }
             }
         }
+    }
+
+    @Deprecated
+    public static void forwardRewards(List<String> rewards, Player player) {
+        forwardRewards(rewards, player, new RuntimeVariable());
     }
 
     public static void registerReward(String tag, Reward reward) {

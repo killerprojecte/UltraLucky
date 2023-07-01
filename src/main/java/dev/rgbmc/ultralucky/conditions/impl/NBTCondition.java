@@ -5,14 +5,15 @@ import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.conditions.Condition;
 import dev.rgbmc.ultralucky.hook.PlaceholderAPIHook;
 import dev.rgbmc.ultralucky.utils.ItemUtil;
+import dev.rgbmc.ultralucky.variables.RuntimeVariable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class NBTCondition implements Condition {
     @Override
-    public boolean parse(ItemStack item, Player player, String args) {
+    public boolean parse(ItemStack item, Player player, String args, RuntimeVariable variable) {
         if (ItemUtil.isEmpty(item)) return false;
-        String[] param = PlaceholderAPIHook.evalString(player, args).split(",");
+        String[] param = variable.evalVariables(PlaceholderAPIHook.evalString(player, args)).split(",");
         //[nbt] <TAG>,<操作: has, contains, equals>,<数据类型: int, double, float, long, string>,<数据>
         NBTItem nbtItem = new NBTItem(item);
         String tag = param[0];

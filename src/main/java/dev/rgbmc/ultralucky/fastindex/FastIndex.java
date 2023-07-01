@@ -214,6 +214,7 @@ public class FastIndex {
     }
 
     public static void close() {
+        timer.cancel();
         IOUtils.flushAll();
         executor.shutdown();
     }

@@ -2,6 +2,7 @@ package dev.rgbmc.ultralucky.rewards.impl;
 
 import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.rewards.Reward;
+import dev.rgbmc.ultralucky.variables.RuntimeVariable;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import groovy.lang.Script;
@@ -12,8 +13,8 @@ import java.io.IOException;
 
 public class GroovyReward implements Reward {
     @Override
-    public void forward(Player player, String args) {
-        String[] params = args.split("\\|\\|");
+    public void forward(Player player, String args, RuntimeVariable variable) {
+        String[] params = variable.evalVariables(args).split("\\|\\|");
         GroovyShell gs = new GroovyShell();
         Script script;
         try {

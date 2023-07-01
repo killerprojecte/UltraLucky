@@ -2,6 +2,7 @@ package dev.rgbmc.ultralucky.conditions.impl;
 
 import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.conditions.Condition;
+import dev.rgbmc.ultralucky.variables.RuntimeVariable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,12 +18,13 @@ public class JavascriptCondition implements Condition {
     public ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
 
     @Override
-    public boolean parse(ItemStack item, Player player, String args) {
-        String[] params = args.split("\\|\\|");
+    public boolean parse(ItemStack item, Player player, String args, RuntimeVariable variable) {
+        String[] params = variable.evalVariables(args).split("\\|\\|");
         ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("javascript");
         try {
             Bindings bindings = scriptEngine.createBindings();
             bindings.put("server", Bukkit.getServer());
+            bindings.put("variable", variable);
             scriptEngine.setBindings(bindings, ScriptContext.ENGINE_SCOPE);
             Invocable invocable = (Invocable) scriptEngine.eval(
                     new BufferedReader(

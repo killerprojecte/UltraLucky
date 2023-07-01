@@ -1,6 +1,7 @@
 package dev.rgbmc.ultralucky;
 
 import dev.rgbmc.ultralucky.command.UltraLuckyCommand;
+import dev.rgbmc.ultralucky.fastconfig.FastConfig;
 import dev.rgbmc.ultralucky.fastindex.FastIndex;
 import dev.rgbmc.ultralucky.modules.ModuleManager;
 import dev.rgbmc.ultralucky.utils.Announcement;
@@ -20,6 +21,7 @@ public final class UltraLucky extends JavaPlugin {
     public static UltraLucky instance;
     private static ModuleManager moduleManager;
     private Metrics metrics;
+    private FastConfig fastConfig;
 
     public static ModuleManager getModuleManager() {
         return moduleManager;
@@ -67,12 +69,15 @@ public final class UltraLucky extends JavaPlugin {
         }
         metrics = new Metrics(this, 17766);
         moduleManager = new ModuleManager();
-        getLogger().info("[!] BlockStorage 方块数据库初始化完成");
         moduleManager.loadIncludeModules();
         getLogger().info("[!] 所有内置组件已加载完成");
         getCommand("ultralucky").setExecutor(new UltraLuckyCommand());
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, Announcement::get);
+        getLogger().info("[!] 加载 FastIndex 功能...");
         FastIndex.initIndex(this);
+        getLogger().info("[!] 加载 FastConfig 功能...");
+        fastConfig = new FastConfig();
+        fastConfig.refreshPoint(getConfig(), true);
     }
 
     @Override
@@ -128,5 +133,9 @@ public final class UltraLucky extends JavaPlugin {
                 outputStream.write(bytes, 0, read);
             }
         }
+    }
+
+    public FastConfig getFastConfig() {
+        return fastConfig;
     }
 }

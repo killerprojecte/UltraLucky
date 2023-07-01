@@ -1,6 +1,7 @@
 package dev.rgbmc.ultralucky.rewards.impl;
 
 import dev.rgbmc.ultralucky.rewards.Reward;
+import dev.rgbmc.ultralucky.variables.RuntimeVariable;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -23,8 +24,8 @@ public class HoverMessageReward implements Reward {
     }
 
     @Override
-    public void forward(Player player, String args) {
-        String[] param = PlaceholderAPI.setPlaceholders(player, args).split(",");
+    public void forward(Player player, String args, RuntimeVariable variable) {
+        String[] param = variable.evalVariables(PlaceholderAPI.setPlaceholders(player, args)).split(",");
         if (param.length == 2) {
             player.spigot().sendMessage(getHoverText(param[0], param[1]));
         } else if (param.length == 4) {

@@ -10,6 +10,7 @@ import com.ezylang.evalex.parser.ParseException;
 import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.hook.PlaceholderAPIHook;
 import dev.rgbmc.ultralucky.rewards.Reward;
+import dev.rgbmc.ultralucky.variables.RuntimeVariable;
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.black_ixx.playerpoints.PlayerPointsAPI;
 import org.bukkit.Bukkit;
@@ -23,12 +24,12 @@ public class PlayerPointsReward implements Reward {
     private static PlayerPointsAPI playerPointsAPI = null;
 
     @Override
-    public void forward(Player player, String args) {
+    public void forward(Player player, String args, RuntimeVariable variable) {
         if (playerPointsAPI == null) {
             PlayerPoints plugin = (PlayerPoints) Bukkit.getPluginManager().getPlugin("PlayerPoints");
             playerPointsAPI = plugin.getAPI();
         }
-        Expression expression = new Expression(PlaceholderAPIHook.evalString(player, args), evalExConfiguration);
+        Expression expression = new Expression(variable.evalVariables(PlaceholderAPIHook.evalString(player, args)), evalExConfiguration);
         try {
             EvaluationValue result = expression.evaluate();
             playerPointsAPI.give(player.getUniqueId(), result.getNumberValue().intValue());

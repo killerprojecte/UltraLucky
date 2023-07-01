@@ -10,6 +10,7 @@ import com.ezylang.evalex.parser.ParseException;
 import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.conditions.Condition;
 import dev.rgbmc.ultralucky.hook.PlaceholderAPIHook;
+import dev.rgbmc.ultralucky.variables.RuntimeVariable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -20,13 +21,14 @@ public class ChanceCondition implements Condition {
                     .withAdditionalOperators(BigDecimalMathOperators.allOperators());
 
     @Override
-    public boolean parse(ItemStack item, Player player, String args) {
-        Expression expression = new Expression(PlaceholderAPIHook.evalString(player, args), evalExConfiguration);
+    public boolean parse(ItemStack item, Player player, String args, RuntimeVariable variable) {
+        String chance = variable.evalVariables(PlaceholderAPIHook.evalString(player, args));
+        Expression expression = new Expression(chance, evalExConfiguration);
         try {
             EvaluationValue result = expression.evaluate();
             if (result.getNumberValue().doubleValue() > Math.random()) return true;
         } catch (EvaluationException | ParseException e) {
-            UltraLucky.instance.getLogger().severe("在计算概率时遇到错误 设置的概率: " + args);
+            UltraLucky.instance.getLogger().severe("在计算概率时遇到错误 设置的概率: " + chance);
             e.printStackTrace();
             return false;
         }

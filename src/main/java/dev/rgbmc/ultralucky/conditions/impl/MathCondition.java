@@ -10,6 +10,7 @@ import com.ezylang.evalex.parser.ParseException;
 import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.conditions.Condition;
 import dev.rgbmc.ultralucky.hook.PlaceholderAPIHook;
+import dev.rgbmc.ultralucky.variables.RuntimeVariable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -20,13 +21,14 @@ public class MathCondition implements Condition {
                     .withAdditionalOperators(BigDecimalMathOperators.allOperators());
 
     @Override
-    public boolean parse(ItemStack item, Player player, String args) {
-        Expression expression = new Expression(PlaceholderAPIHook.evalString(player, args), evalExConfiguration);
+    public boolean parse(ItemStack item, Player player, String args, RuntimeVariable variable) {
+        String formula = variable.evalVariables(PlaceholderAPIHook.evalString(player, args));
+        Expression expression = new Expression(formula, evalExConfiguration);
         try {
             EvaluationValue result = expression.evaluate();
             return result.getBooleanValue();
         } catch (EvaluationException | ParseException e) {
-            UltraLucky.instance.getLogger().severe("在比较数学公式时遇到错误 公式: " + args);
+            UltraLucky.instance.getLogger().severe("在比较数学公式时遇到错误 公式: " + formula);
             e.printStackTrace();
             return false;
         }

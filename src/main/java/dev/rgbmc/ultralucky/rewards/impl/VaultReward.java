@@ -10,6 +10,7 @@ import com.ezylang.evalex.parser.ParseException;
 import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.hook.PlaceholderAPIHook;
 import dev.rgbmc.ultralucky.rewards.Reward;
+import dev.rgbmc.ultralucky.variables.RuntimeVariable;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -23,14 +24,14 @@ public class VaultReward implements Reward {
     private static Economy econ = null;
 
     @Override
-    public void forward(Player player, String args) {
+    public void forward(Player player, String args, RuntimeVariable variable) {
         if (econ == null) {
             if (!setupEconomy()) {
                 UltraLucky.instance.getLogger().severe("Vault 尚未配置经济实现 请安装基础插件(CMI/ESS/等)或独立的Economy经济");
                 return;
             }
         }
-        Expression expression = new Expression(PlaceholderAPIHook.evalString(player, args), evalExConfiguration);
+        Expression expression = new Expression(variable.evalVariables(PlaceholderAPIHook.evalString(player, args)), evalExConfiguration);
         try {
             EvaluationValue result = expression.evaluate();
             econ.depositPlayer(player, result.getNumberValue().doubleValue());

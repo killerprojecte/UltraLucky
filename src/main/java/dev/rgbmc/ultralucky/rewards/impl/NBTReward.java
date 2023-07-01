@@ -5,15 +5,16 @@ import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.hook.PlaceholderAPIHook;
 import dev.rgbmc.ultralucky.rewards.Reward;
 import dev.rgbmc.ultralucky.utils.ItemUtil;
+import dev.rgbmc.ultralucky.variables.RuntimeVariable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class NBTReward implements Reward {
     @Override
-    public void forward(Player player, String args) {
+    public void forward(Player player, String args, RuntimeVariable variable) {
         ItemStack item = player.getInventory().getItemInMainHand();
         if (ItemUtil.isEmpty(item)) return;
-        String[] param = PlaceholderAPIHook.evalString(player, args).split(",");
+        String[] param = variable.evalVariables(PlaceholderAPIHook.evalString(player, args)).split(",");
         //[nbt] <TAG>,<数据类型: int, double, float, long, string>,<数据>
         NBTItem nbtItem = new NBTItem(item);
         String tag = param[0];

@@ -2,6 +2,7 @@ package dev.rgbmc.ultralucky.conditions.impl;
 
 import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.conditions.Condition;
+import dev.rgbmc.ultralucky.variables.RuntimeVariable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -13,7 +14,8 @@ public class TimeCondition implements Condition {
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Override
-    public boolean parse(ItemStack item, Player player, String args) {
+    public boolean parse(ItemStack item, Player player, String args, RuntimeVariable variable) {
+        args = variable.evalVariables(args);
         String[] param = args.split(",");
         try {
             Date start = sdf.parse(param[0]);

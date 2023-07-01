@@ -2,6 +2,7 @@ package dev.rgbmc.ultralucky.rewards.impl;
 
 import dev.rgbmc.ultralucky.conditions.impl.CooldownCondition;
 import dev.rgbmc.ultralucky.rewards.Reward;
+import dev.rgbmc.ultralucky.variables.RuntimeVariable;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -16,7 +17,8 @@ public class CooldownReward implements Reward {
     private static final ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(2);
 
     @Override
-    public void forward(Player player, String args) {
+    public void forward(Player player, String args, RuntimeVariable variable) {
+        args = variable.evalVariables(args);
         String[] param = args.split(" ");
         long second = Long.parseLong(param[1]);
         Map<UUID, Long> data;

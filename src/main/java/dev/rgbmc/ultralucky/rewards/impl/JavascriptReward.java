@@ -2,6 +2,7 @@ package dev.rgbmc.ultralucky.rewards.impl;
 
 import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.rewards.Reward;
+import dev.rgbmc.ultralucky.variables.RuntimeVariable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -16,8 +17,8 @@ public class JavascriptReward implements Reward {
     public ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
 
     @Override
-    public void forward(Player player, String args) {
-        String[] params = args.split("\\|\\|");
+    public void forward(Player player, String args, RuntimeVariable variable) {
+        String[] params = variable.evalVariables(args).split("\\|\\|");
         ScriptEngine scriptEngine = scriptEngineManager.getEngineByName("javascript");
         try {
             Bindings bindings = scriptEngine.createBindings();

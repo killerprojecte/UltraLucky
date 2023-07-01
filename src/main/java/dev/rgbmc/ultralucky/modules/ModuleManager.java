@@ -29,6 +29,7 @@ public class ModuleManager {
                 continue;
             }
             module.register();
+            module.getConfigManager();
         }
     }
 
