@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class IOUtils {
@@ -100,7 +101,7 @@ public class IOUtils {
     }
 
     protected static void flushAll() {
-        for (ChunkIndex value : chunkIndexMap.values()) {
+        for (ChunkIndex value : List.copyOf(chunkIndexMap.values())) {
             writeChunkIndex(value);
         }
     }

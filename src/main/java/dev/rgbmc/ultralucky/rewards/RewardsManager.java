@@ -53,12 +53,14 @@ public class RewardsManager {
             }
             if (Bukkit.getPluginManager().getPlugin("MythicMobs") != null) {
                 Plugin mythicMobs = Bukkit.getPluginManager().getPlugin("MythicMobs");
-                if (mythicMobs.getDescription().getVersion().startsWith("4.")) {
-                    UltraLucky.instance.getLogger().info("已检测到 MythicMobs 4.x, 已添加 MythicMobs怪物 奖励");
+                if (mythicMobs.getDescription().getVersion().startsWith("4.") || mythicMobs.getDescription().getVersion().startsWith("5.0.0")) {
+                    UltraLucky.instance.getLogger().info("已检测到 MythicMobs 4.x (包括5.0.0), 已添加 MythicMobs附属 奖励");
                     put("mythicmobs", new MythicMobs4Reward());
+                    put("mythicitem", new MythicItem4Reward());
                 } else if (mythicMobs.getDescription().getVersion().startsWith("5.")) {
-                    UltraLucky.instance.getLogger().info("已检测到 MythicMobs 5.x, 已添加 MythicMobs怪物 奖励");
+                    UltraLucky.instance.getLogger().info("已检测到 MythicMobs 5.x, 已添加 MythicMobs附属 奖励");
                     put("mythicmobs", new MythicMobs5Reward());
+                    put("mythicitem", new MythicItem5Reward());
                 } else {
                     UltraLucky.instance.getLogger().warning("已检测到 MythicMobs 但已安装版本: " + mythicMobs.getDescription().getVersion() + " 为找到对应兼容模块");
                 }
