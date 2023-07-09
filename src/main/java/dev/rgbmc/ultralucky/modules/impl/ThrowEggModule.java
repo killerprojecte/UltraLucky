@@ -36,7 +36,7 @@ public class ThrowEggModule implements Module {
             RuntimeVariable variable = new RuntimeVariable();
             variable.put("world_name", event.getPlayer().getWorld().getName());
             variable.put("player_name", event.getPlayer().getName());
-            variable.put("hatching_type", event.getHatchingType().toString().toUpperCase());
+            variable.put("hatching_types", event.getHatchingType().toString().toUpperCase());
             boolean status = ConditionsParser.checkConditions(section.getStringList("conditions"), event.getPlayer().getInventory().getItemInMainHand(), event.getPlayer(), variable);
             if (status)
                 Bukkit.getScheduler().runTask(UltraLucky.instance, () -> RewardsManager.forwardRewards(section.getStringList("rewards"), event.getPlayer(), variable));

@@ -28,4 +28,8 @@ public interface Module extends Listener {
     default void register() {
         UltraLucky.getModuleManager().registerModule(this);
     }
+
+    default void unregister() {
+        UltraLucky.getModuleManager().unregisterModule(this);
+    }
 }

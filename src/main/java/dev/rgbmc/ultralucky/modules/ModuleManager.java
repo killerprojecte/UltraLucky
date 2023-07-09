@@ -3,6 +3,7 @@ package dev.rgbmc.ultralucky.modules;
 import dev.rgbmc.ultralucky.UltraLucky;
 import dev.rgbmc.ultralucky.modules.impl.*;
 import org.bukkit.Bukkit;
+import org.bukkit.event.HandlerList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,9 +40,19 @@ public class ModuleManager {
         loadedModules.add(module);
     }
 
+    public void unregisterModule(Module module) {
+        UltraLucky.instance.getLogger().info("[!] 卸载模块 名称: " + module.getName() + " 作者: " + module.getAuthor() + " 版本: " + module.getVersion());
+        HandlerList.unregisterAll(module);
+        loadedModules.remove(module);
+    }
+
     public void reloadAllModule() {
         for (Module module : loadedModules) {
             module.getConfigManager().reloadConfig();
+            module.unregister();
         }
+
+        loadedModules.clear();
+        loadIncludeModules();
     }
 }
