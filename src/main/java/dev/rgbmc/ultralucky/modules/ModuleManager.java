@@ -22,7 +22,9 @@ public class ModuleManager {
                 new KillModule(),
                 new ThrowEggModule(),
                 new InteractBlockModule(),
-                new AttackModule()
+                new AttackModule(),
+                new DeathModule(),
+                new TimerModule()
         );
         for (Module module : include) {
             if (UltraLucky.instance.getConfig().getStringList("disable-modules").contains(module.getName())) {
@@ -47,7 +49,7 @@ public class ModuleManager {
     }
 
     public void reloadAllModule() {
-        for (Module module : loadedModules) {
+        for (Module module : List.copyOf(loadedModules)) {
             module.getConfigManager().reloadConfig();
             module.unregister();
         }

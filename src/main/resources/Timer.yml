@@ -1,0 +1,14 @@
+#UltraLucky
+#模块 - Timer (定时任务)
+#制作者 FlyProject
+timer:
+  example:
+    #物品匹配条件
+    #第一行请设置为最重要的匹配条件
+    conditions:
+      - "[name] &f&lTest"
+    #物品奖励
+    rewards:
+      - "[console] say Test"
+    #多久执行一次
+    period: 20

@@ -40,8 +40,16 @@ public class ConditionsParser {
                 UltraLucky.instance.getLogger().info("已检测到 NBTAPI, 已添加 NBT 条件检测");
                 put("nbt", new NBTCondition());
             }
+            if (Bukkit.getPluginManager().getPlugin("MMOItems") != null) {
+                UltraLucky.instance.getLogger().info("已检测到 MMOItems, 已添加 MMOItems 条件检测");
+                put("mmoitems", new MMOItemsCondition());
+            }
         }
     };
+
+    public static Map<String, Condition> getConditions() {
+        return conditionMap;
+    }
 
     public static boolean checkConditions(List<String> conditions, ItemStack item, Player player, RuntimeVariable variable) {
         for (String line : conditions) {

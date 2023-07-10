@@ -49,6 +49,9 @@ public class MiningModule implements Module {
                 variable.put("world_name", player.getWorld().getName());
                 variable.put("player_name", player.getName());
                 variable.put("block_type", event.getBlock().getType().toString().toUpperCase());
+                variable.put("location_x", String.valueOf(event.getBlock().getLocation().getBlockX()));
+                variable.put("location_y", String.valueOf(event.getBlock().getLocation().getBlockY()));
+                variable.put("location_z", String.valueOf(event.getBlock().getLocation().getBlockZ()));
                 boolean status = ConditionsParser.checkConditions(section.getStringList("conditions"), pickaxe, player, variable);
                 if (status) {
                     if (section.getBoolean("prevent-drop")) {

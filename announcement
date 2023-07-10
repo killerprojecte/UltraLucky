@@ -4,4 +4,7 @@ UltraLucky 最新版本构建已在Github Releases可用
 FastIndex 已替代 BlockStorage 实现高性能方块数据存储
 RuntimeVariable 已在1.1.0最新版中可用 (大部分条件和奖励都已带有变量)
 FastConfig 已替代Bukkit原生yaml配置框架 缓存配置后读取性能更高
-[2023-7-1]
+
+新版已支持MythicMobs物品库和MMOItems物品库
+已添加Timer定时模块和Death实体死亡模块
+[2023-7-10]

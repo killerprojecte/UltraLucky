@@ -69,6 +69,10 @@ public class RewardsManager {
                 UltraLucky.instance.getLogger().info("已检测到 NBTAPI, 已添加 NBT 奖励");
                 put("nbt", new NBTReward());
             }
+            if (Bukkit.getPluginManager().getPlugin("MMOItems") != null) {
+                UltraLucky.instance.getLogger().info("已检测到 MMOItems, 已添加 MMOItems 物品奖励");
+                put("mmoitems", new MMOItemsReward());
+            }
         }
     };
 
@@ -84,6 +88,10 @@ public class RewardsManager {
                 }
             }
         }
+    }
+
+    public static Map<String, Reward> getRewards() {
+        return rewardMap;
     }
 
     @Deprecated
