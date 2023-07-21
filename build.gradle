@@ -48,7 +48,7 @@ dependencies {
     implementation 'com.ezylang:EvalEx-big-math:1.0.0'
     implementation 'org.xerial:sqlite-jdbc:3.40.1.0'
     implementation 'org.apache.groovy:groovy:4.0.10'
-    compileOnly 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT'
     compileOnly 'me.clip:placeholderapi:2.11.2'
     compileOnly 'org.fastmcmirror:flybuff-next:2.0.0-SNAPSHOT-e918cc1'
     compileOnly 'pku.yim:magicgem:1.05'

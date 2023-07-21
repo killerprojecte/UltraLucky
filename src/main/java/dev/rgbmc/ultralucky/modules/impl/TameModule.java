@@ -28,7 +28,7 @@ public class TameModule implements Module {
         return "Official";
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onTamed(EntityTameEvent event) {
         if (event.isCancelled()) return;
         if (!(event.getOwner() instanceof Player)) return;

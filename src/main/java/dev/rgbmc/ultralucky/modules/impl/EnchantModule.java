@@ -27,7 +27,7 @@ public class EnchantModule implements Module {
         return "Official";
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onEnchanting(EnchantItemEvent event) {
         if (event.isCancelled()) return;
         for (String key : getConfigManager().getConfig().getSection("enchant").getKeys(false)) {

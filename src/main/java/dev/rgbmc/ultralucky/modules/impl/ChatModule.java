@@ -7,15 +7,14 @@ import dev.rgbmc.ultralucky.modules.Module;
 import dev.rgbmc.ultralucky.rewards.RewardsManager;
 import dev.rgbmc.ultralucky.variables.RuntimeVariable;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class EatModule implements Module {
+public class ChatModule implements Module {
     @Override
     public String getName() {
-        return "Eat";
+        return "Chat";
     }
 
     @Override
@@ -29,22 +28,19 @@ public class EatModule implements Module {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onEating(PlayerItemConsumeEvent event) {
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
         if (event.isCancelled()) return;
-        if (event.getItem().getType().equals(Material.AIR)) return;
-        for (String key : getConfigManager().getConfig().getSection("eat").getKeys(false)) {
-            Section section = getConfigManager().getConfig().getSection("eat." + key);
-            if (!(section.getStringList("materials").contains(event.getItem().getType().toString().toLowerCase()) ||
-                    section.getStringList("materials").contains(event.getItem().getType().toString().toUpperCase())))
-                continue;
+        for (String key : getConfigManager().getConfig().getSection("chat").getKeys(false)) {
+            Section section = getConfigManager().getConfig().getSection("chat." + key);
             RuntimeVariable variable = new RuntimeVariable();
             variable.put("world_name", event.getPlayer().getWorld().getName());
             variable.put("player_name", event.getPlayer().getName());
-            variable.put("food_type", event.getItem().getType().toString().toUpperCase());
-            if (event.getItem().hasItemMeta() && event.getItem().getItemMeta().hasDisplayName()) {
-                variable.put("food_name", event.getItem().getItemMeta().getDisplayName());
-            }
-            boolean status = ConditionsParser.checkConditions(section.getStringList("conditions"), event.getItem(), event.getPlayer(), variable);
+            variable.put("location_x", String.valueOf(event.getPlayer().getLocation().getX()));
+            variable.put("location_y", String.valueOf(event.getPlayer().getLocation().getY()));
+            variable.put("location_z", String.valueOf(event.getPlayer().getLocation().getZ()));
+            variable.put("message", event.getMessage());
+            variable.put("formatted", event.getFormat());
+            boolean status = ConditionsParser.checkConditions(section.getStringList("conditions"), event.getPlayer().getInventory().getItemInHand(), event.getPlayer(), variable);
             if (status)
                 Bukkit.getScheduler().runTask(UltraLucky.instance, () -> RewardsManager.forwardRewards(section.getStringList("rewards"), event.getPlayer(), variable));
         }

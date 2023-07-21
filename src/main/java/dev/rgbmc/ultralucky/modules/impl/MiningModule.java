@@ -34,7 +34,7 @@ public class MiningModule implements Module {
         return "Official";
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onMine(BlockBreakEvent event) {
         if (event.isCancelled()) return;
         Player player = event.getPlayer();

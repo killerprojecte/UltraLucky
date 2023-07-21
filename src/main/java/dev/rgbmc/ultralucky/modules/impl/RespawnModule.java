@@ -9,12 +9,12 @@ import dev.rgbmc.ultralucky.variables.RuntimeVariable;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.player.PlayerEggThrowEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
-public class ThrowEggModule implements Module {
+public class RespawnModule implements Module {
     @Override
     public String getName() {
-        return "ThrowEgg";
+        return "Respawn";
     }
 
     @Override
@@ -28,17 +28,16 @@ public class ThrowEggModule implements Module {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onThrowEgg(PlayerEggThrowEvent event) {
-        for (String key : getConfigManager().getConfig().getSection("throwing").getKeys(false)) {
-            Section section = getConfigManager().getConfig().getSection("throwing." + key);
-            if (section.getBoolean("hatching") && !event.isHatching()) continue;
-            if (section.getStringList("hatching_type").stream().noneMatch(type -> event.getHatchingType().toString().equalsIgnoreCase(type)))
-                continue;
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        for (String key : getConfigManager().getConfig().getSection("respawn").getKeys(false)) {
+            Section section = getConfigManager().getConfig().getSection("respawn." + key);
             RuntimeVariable variable = new RuntimeVariable();
             variable.put("world_name", event.getPlayer().getWorld().getName());
             variable.put("player_name", event.getPlayer().getName());
-            variable.put("hatching_types", event.getHatchingType().toString().toUpperCase());
-            boolean status = ConditionsParser.checkConditions(section.getStringList("conditions"), event.getPlayer().getInventory().getItemInMainHand(), event.getPlayer(), variable);
+            variable.put("location_x", String.valueOf(event.getPlayer().getLocation().getX()));
+            variable.put("location_y", String.valueOf(event.getPlayer().getLocation().getY()));
+            variable.put("location_z", String.valueOf(event.getPlayer().getLocation().getZ()));
+            boolean status = ConditionsParser.checkConditions(section.getStringList("conditions"), event.getPlayer().getInventory().getItemInHand(), event.getPlayer(), variable);
             if (status)
                 Bukkit.getScheduler().runTask(UltraLucky.instance, () -> RewardsManager.forwardRewards(section.getStringList("rewards"), event.getPlayer(), variable));
         }

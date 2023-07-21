@@ -29,7 +29,7 @@ public class KillModule implements Module {
         return "Official";
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDead(EntityDeathEvent event) {
         if (event.getEntity().getKiller() == null) return;
         Player killer = event.getEntity().getKiller();
@@ -42,6 +42,9 @@ public class KillModule implements Module {
             variable.put("player_name", killer.getName());
             variable.put("target_name", event.getEntity().getName());
             variable.put("target_type", event.getEntity().getType().toString().toUpperCase());
+            variable.put("target_location_x", String.valueOf(event.getEntity().getLocation().getBlockX()));
+            variable.put("target_location_y", String.valueOf(event.getEntity().getLocation().getBlockY()));
+            variable.put("target_location_z", String.valueOf(event.getEntity().getLocation().getBlockZ()));
             boolean status = ConditionsParser.checkConditions(section.getStringList("conditions"), killer.getItemInHand(), killer, variable);
             if (status) {
                 Bukkit.getScheduler().runTask(UltraLucky.instance, () -> {

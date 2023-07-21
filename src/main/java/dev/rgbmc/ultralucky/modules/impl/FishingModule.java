@@ -27,7 +27,7 @@ public class FishingModule implements Module {
         return "Official";
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onFishing(PlayerFishEvent event) {
         if (event.isCancelled()) return;
         if (event.getCaught() == null) return;

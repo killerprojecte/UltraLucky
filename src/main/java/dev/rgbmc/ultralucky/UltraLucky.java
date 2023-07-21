@@ -1,9 +1,11 @@
 package dev.rgbmc.ultralucky;
 
 import dev.rgbmc.ultralucky.command.UltraLuckyCommand;
+import dev.rgbmc.ultralucky.conditions.ConditionsParser;
 import dev.rgbmc.ultralucky.fastconfig.FastConfig;
 import dev.rgbmc.ultralucky.fastindex.FastIndex;
 import dev.rgbmc.ultralucky.modules.ModuleManager;
+import dev.rgbmc.ultralucky.rewards.RewardsManager;
 import dev.rgbmc.ultralucky.utils.Announcement;
 import dev.rgbmc.ultralucky.utils.Metrics;
 import org.bukkit.Bukkit;
@@ -42,8 +44,9 @@ public final class UltraLucky extends JavaPlugin {
         saveFile("RewardsGroup.yml");
         saveFile("InteractBlock.yml");
         saveFile("Attack.yml");
-        saveFile("Death.yml");
         saveFile("Timer.yml");
+        saveFile("Respawn.yml");
+        saveFile("Chat.yml");
         saveFile("js/example.js");
         saveFile("scripts/condition.groovy");
         saveFile("scripts/reward.groovy");
@@ -72,6 +75,8 @@ public final class UltraLucky extends JavaPlugin {
         metrics = new Metrics(this, 17766);
         moduleManager = new ModuleManager();
         moduleManager.loadIncludeModules();
+        getLogger().info("[!] 已加载 " + ConditionsParser.getConditions().size() + " 个条件组件");
+        getLogger().info("[!] 已加载 " + RewardsManager.getRewards().size() + " 个奖励组件");
         getLogger().info("[!] 所有内置组件已加载完成");
         getCommand("ultralucky").setExecutor(new UltraLuckyCommand());
         Bukkit.getScheduler().scheduleSyncDelayedTask(this, Announcement::get);

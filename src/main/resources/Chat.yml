@@ -1,0 +1,12 @@
+#UltraLucky
+#模块 - Chat (聊天)
+#制作者 FlyProject
+chat:
+  example:
+    #物品匹配条件
+    #使用变量$message获取聊天内容
+    conditions:
+      - "[name] &f&lTest"
+    #物品奖励
+    rewards:
+      - "[console] say Test"

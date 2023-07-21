@@ -1,8 +1,10 @@
 package dev.rgbmc.ultralucky.block_conditions;
 
 import dev.rgbmc.ultralucky.UltraLucky;
+import dev.rgbmc.ultralucky.block_conditions.impl.BrushableCondition;
 import dev.rgbmc.ultralucky.block_conditions.impl.LocationCondition;
 import dev.rgbmc.ultralucky.block_conditions.impl.TypeCondition;
+import dev.rgbmc.ultralucky.utils.MinecraftVersion;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -15,6 +17,9 @@ public class BlockConditionsParser {
         {
             put("loc", new LocationCondition());
             put("type", new TypeCondition());
+            if (MinecraftVersion.getMinecraftVersion().startsWith("1.20")) {
+                put("brushable", new BrushableCondition());
+            }
         }
     };
 

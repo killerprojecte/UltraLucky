@@ -23,8 +23,9 @@ public class ModuleManager {
                 new ThrowEggModule(),
                 new InteractBlockModule(),
                 new AttackModule(),
-                new DeathModule(),
-                new TimerModule()
+                new TimerModule(),
+                new RespawnModule(),
+                new ChatModule()
         );
         for (Module module : include) {
             if (UltraLucky.instance.getConfig().getStringList("disable-modules").contains(module.getName())) {
