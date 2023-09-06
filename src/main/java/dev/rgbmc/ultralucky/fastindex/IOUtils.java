@@ -43,6 +43,9 @@ public class IOUtils {
             return chunkIndexMap.get(getChunkKey(chunk));
         }
         try {
+            if (!file.exists()) {
+                return new ChunkIndex(chunk.getX(), chunk.getZ(), chunk.getWorld().getName());
+            }
             FileInputStream fileInputStream = new FileInputStream(file);
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
             ChunkIndex chunkIndex = (ChunkIndex) objectInputStream.readObject();
